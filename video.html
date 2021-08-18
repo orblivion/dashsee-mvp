@@ -2,17 +2,16 @@
 <html>
 <head>
 <style>
-body {background-color: #EEF; font-family: Arial,Helvetica Neue,Helvetica,sans-serif;}
+body {margin:0px; padding:0px; background-color: #EEF; font-family: Arial,Helvetica Neue,Helvetica,sans-serif;}
+div { margin: 20px; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 20px;}
 h1   {color: #222;}
 p    {color: #444;}
-
 
 .header {
     /* Stick to the top */
     position: sticky;
     top: 0;
 }
-
 
 </style>
 </head>
@@ -22,9 +21,13 @@ p    {color: #444;}
 	<input/>
 </header>
 <main>
-	<video></video>
-	<h1>This is a heading</h1>
-	<p>This is a paragraph.</p>
+	<div style='background-color:blue;'>
+		<video></video>
+	</div>
+	<div style='background-color:green;'>
+		<h1>This is a heading</h1>
+		<p>This is a paragraph.</p>
+	</div>
 </main>
 
 </body>
