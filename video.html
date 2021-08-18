@@ -13,12 +13,70 @@ p    {color: #444;}
     top: 0;
 }
 
+.header {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-main {
+    /* Take the remaining height */
+    flex-grow: 1;
+
+    /* Layout the left side, input, and right side */
+    display: flex;
+    flex-direction: row;
+}
+
+.header-left {
+    width: 25%;
+    background-color:grey;
+}
+
+.header-middle {
+    /* Take the remaining width */
+    flex-grow: 1;
+}
+
+.header-right {
+    width: 25%;
+    background-color:grey;
+}
+
+
+.header-middle input {
+	width: 100%
+}
+
+
 </style>
 </head>
 <body>
 
 <header class="header">
-	<input/>
+	<div class="header-main">
+		<span class='header-left'>
+			...
+			...
+			...
+			...
+			...
+			...
+			...
+		</span>
+		<span class='header-middle'>
+			<input/>
+		</span>
+		<span class='header-right'>
+			...
+			...
+			...
+			...
+			...
+			...
+			...
+			...
+		</span>
+	</div>
 </header>
 <main>
 	<div style='background-color:blue;'>
