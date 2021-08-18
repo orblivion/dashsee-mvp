@@ -16,6 +16,8 @@ p    {color: #444;}
 .header {
     display: flex;
     flex-direction: column;
+
+    border-bottom: 4px solid #E5E5E5;
 }
 
 .header-main {
@@ -25,6 +27,9 @@ p    {color: #444;}
     /* Layout the left side, input, and right side */
     display: flex;
     flex-direction: row;
+
+    padding:0px;
+    margin:0px;
 }
 
 .header-left {
@@ -42,11 +47,17 @@ p    {color: #444;}
     background-color:grey;
 }
 
-
 .header-middle input {
 	width: 100%
 }
 
+.video-icontainer {
+    border: 2px solid #E5E5E5;
+}
+
+.video-details {
+    border: 2px solid #E5E5E5;
+}
 
 </style>
 </head>
@@ -79,10 +90,10 @@ p    {color: #444;}
 	</div>
 </header>
 <main>
-	<div style='background-color:blue;'>
+	<div class='video-container'>
 		<video></video>
 	</div>
-	<div style='background-color:green;'>
+	<div class='video-details'>
 		<h1>This is a heading</h1>
 		<p>This is a paragraph.</p>
 	</div>
