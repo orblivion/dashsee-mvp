@@ -1,7 +1,3 @@
- <!DOCTYPE html>
-<html>
-<head>
-<style>
 body {margin:0px; padding:0px; background-color: #EEF; font-family: Arial,Helvetica Neue,Helvetica,sans-serif;}
 div { margin: 20px; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 20px;}
 h1   {color: #222;}
@@ -58,46 +54,3 @@ p    {color: #444;}
 .video-details {
     border: 2px solid #E5E5E5;
 }
-
-</style>
-</head>
-<body>
-
-<header class="header">
-	<div class="header-main">
-		<span class='header-left'>
-			...
-			...
-			...
-			...
-			...
-			...
-			...
-		</span>
-		<span class='header-middle'>
-			<input/>
-		</span>
-		<span class='header-right'>
-			...
-			...
-			...
-			...
-			...
-			...
-			...
-			...
-		</span>
-	</div>
-</header>
-<main>
-	<div class='video-container'>
-		<video></video>
-	</div>
-	<div class='video-details'>
-		<h1>This is a heading</h1>
-		<p>This is a paragraph.</p>
-	</div>
-</main>
-
-</body>
-</html>
