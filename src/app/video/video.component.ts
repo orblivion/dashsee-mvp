@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Video } from '../video';
+import { VIDEO } from '../mock-video';
 
 @Component({
   selector: 'app-video',
@@ -7,11 +8,7 @@ import { Video } from '../video';
   styleUrls: ['./video.component.css']
 })
 export class VideoComponent implements OnInit {
-  video: Video = {
-    id: 0,
-    name: "video name",
-    description: "video description"
-  };
+  video = VIDEO;
 
   constructor() { }
 
