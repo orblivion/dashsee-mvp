@@ -13,7 +13,8 @@ export class VideoComponent implements OnInit {
   constructor(private videoService : VideoService) { }
 
   getVideo(): void {
-    this.video = this.videoService.getVideo()
+    this.videoService.getVideo()
+      .subscribe(video => this.video = video);
   }
 
   ngOnInit(): void {
