@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Video } from '../video';
-import { VIDEO } from '../mock-video';
+import { VideoService } from '../video.service';
 
 @Component({
   selector: 'app-video',
@@ -8,11 +8,16 @@ import { VIDEO } from '../mock-video';
   styleUrls: ['./video.component.css']
 })
 export class VideoComponent implements OnInit {
-  video = VIDEO;
+  video? : Video;
 
-  constructor() { }
+  constructor(private videoService : VideoService) { }
+
+  getVideo(): void {
+    this.video = this.videoService.getVideo()
+  }
 
   ngOnInit(): void {
+    this.getVideo();
   }
 
 }

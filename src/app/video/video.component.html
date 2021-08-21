@@ -1,7 +1,9 @@
-<div class='video-container'>
-	<video></video>
-</div>
-<div class='video-details'>
-	<h1>{{video.name}}</h1>
-	<p>{{video.description}}</p>
+<div *ngIf="video">
+	<div class='video-container'>
+		<video></video>
+	</div>
+	<div class='video-details'>
+		<h1>{{video.name}}</h1>
+		<p>{{video.description}}</p>
+	</div>
 </div>
