@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Video } from '../video';
+import { VideoService } from '../video.service';
 
 @Component({
   selector: 'app-video-list',
@@ -6,10 +8,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./video-list.component.css']
 })
 export class VideoListComponent implements OnInit {
+  videos : Video[] = [];
 
-  constructor() { }
+  constructor(private videoService : VideoService) { }
+
+  getVideos(): void {
+    this.videoService.getVideos()
+      .subscribe(videos => this.videos = videos)
+  }
 
   ngOnInit(): void {
+    this.getVideos()
   }
 
 }

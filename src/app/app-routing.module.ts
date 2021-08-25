@@ -1,24 +1,75 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, UrlSegment } from '@angular/router';
 import { VideoComponent } from './video/video.component';
 import { VideoListComponent } from './video-list/video-list.component';
+import { LBRYMediaIds, LBRYMediaClaims } from './mediaIds';
+
+interface LBRYMediaUrlMaybeParts
+{
+  ids? : LBRYMediaIds,
+  claims? : LBRYMediaClaims,
+}
+
+function getLBRYMediaUrlParts(url : UrlSegment[]) : LBRYMediaUrlMaybeParts {
+  // Not a LBRYMedia media URL
+  if (url.length !==2 ) {
+    return {};
+  }
+
+  let usernameMatch = url[0].path.match(/^@?(?<username>\w+)(:(?<usernameClaim>\w+))?$/);
+  let mediaHashMatch = url[1].path.match(/^(?<mediaHash>\w+)(:(?<mediaHashClaim>\w+))?$/);
+
+  if (usernameMatch && mediaHashMatch && usernameMatch.groups && mediaHashMatch.groups) {
+    return {
+      ids: {
+        username: usernameMatch.groups['username'],
+        mediaHash: mediaHashMatch.groups['mediaHash'],
+      },
+      claims: {
+        usernameClaim: usernameMatch.groups['usernameClaim'],
+        mediaHashClaim: mediaHashMatch.groups['mediaHashClaim'],
+      },
+    };
+  }
+
+  return {};
+}
+
+function matchMediaUrl(url : UrlSegment[]) {
+  let {ids, claims} = getLBRYMediaUrlParts(url)
+
+  // We need at least the username and hash to go to the video component.
+  if (ids) {
+    if (claims) {
+      return {
+        consumed: url,
+        posParams: {
+          username: new UrlSegment(ids.username, {}),
+          mediaHash: new UrlSegment(ids.mediaHash, {}),
+          usernameClaim: new UrlSegment(claims.usernameClaim, {}),
+          mediaHashClaim: new UrlSegment(claims.mediaHashClaim, {}),
+        }
+      };
+    }
+    // TODO - Sending in UrlSegment('', {}) for claims for lack of better idea.
+    // Maybe this could be simplified.
+    return {
+      consumed: url,
+      posParams: {
+        username: new UrlSegment(ids.username, {}),
+        mediaHash: new UrlSegment(ids.mediaHash, {}),
+        usernameClaim: new UrlSegment('', {}),
+        mediaHashClaim: new UrlSegment('', {}),
+      }
+    };
+  }
+
+  return null;
+}
 
 const routes: Routes = [
   { path: '', component: VideoListComponent },
-
-  // TODO: A full path looks something like:
-  //
-  // @Odysee:8/techAMA:f
-  //
-  // #1 We gotta make Angular expect but then ignore the leading @ to get the username
-  // #2 We gotta make Angular okay with the : in the username and id.
-  //
-  // For #2, what comes after the : seems to be optional, but there's a right and wrong value.
-  // The wrong value will lead to a 404. A missing value will lead to redirecting to the right
-  // value. We could figure out how it works, or take the simplest path to get it to work and
-  // acknowage it as a task for the full version.
-
-  { path: ':username/:videoId', component: VideoComponent },
+  { matcher: matchMediaUrl, component: VideoComponent },
 ];
 
 @NgModule({

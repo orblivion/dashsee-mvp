@@ -1,9 +1,15 @@
-<div *ngIf="video">
-	<div class='video-container'>
-		<video></video>
-	</div>
-	<div class='video-details'>
-		<h1>{{video.name}}</h1>
-		<p>{{video.description}}</p>
-	</div>
+<div *ngIf="notFound; else Ready">
+Not found!
 </div>
+<ng-template #Ready>
+  <div *ngIf="video; else Loading">
+    <div class='video-container'>
+      <video></video>
+    </div>
+    <div class='video-details'>
+      <h1>{{video.name}}</h1>
+      <p>{{video.description}}</p>
+    </div>
+  </div>
+  <ng-template #Loading>loading...</ng-template>
+</ng-template>

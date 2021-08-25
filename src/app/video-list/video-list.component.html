@@ -1,2 +1,7 @@
-<div><a routerLink="/Odysee:8/techAMA:f">Odysee AMA</a></div>
-<div><a routerLink="/BretWeinstein:f/EvoLensQandA92:9">Dark Horse 92 Q&A</a></div>
+<ul class="heroes">
+  <li *ngFor="let video of videos">
+    <a routerLink="/@{{video.username}}:{{video.usernameClaim}}/{{video.mediaHash}}:{{video.mediaHashClaim}}">
+      {{video.username}}: {{video.name}}
+    </a>
+  </li>
+</ul>
