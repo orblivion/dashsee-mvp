@@ -6,13 +6,15 @@ import { VideoComponent } from './video/video.component';
 import { StatusComponent } from './status/status.component';
 import { AppRoutingModule } from './app-routing.module';
 import { VideoListComponent } from './video-list/video-list.component';
+import { TmpVideoDemoComponent } from './tmp-video-demo/tmp-video-demo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     VideoComponent,
     StatusComponent,
-    VideoListComponent
+    VideoListComponent,
+    TmpVideoDemoComponent
   ],
   imports: [
     BrowserModule,

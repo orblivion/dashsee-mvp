@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes, UrlSegment } from '@angular/router';
 import { VideoComponent } from './video/video.component';
 import { VideoListComponent } from './video-list/video-list.component';
+import { TmpVideoDemoComponent } from './tmp-video-demo/tmp-video-demo.component';
 import { LBRYMediaIds, LBRYMediaClaims } from './mediaIds';
 
 interface LBRYMediaUrlMaybeParts
@@ -69,6 +70,7 @@ function matchMediaUrl(url : UrlSegment[]) {
 
 const routes: Routes = [
   { path: '', component: VideoListComponent },
+  { path: 'demo', component: TmpVideoDemoComponent },
   { matcher: matchMediaUrl, component: VideoComponent },
 ];
 
