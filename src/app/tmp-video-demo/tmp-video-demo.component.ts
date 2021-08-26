@@ -7,7 +7,7 @@ import { HttpClient } from "@angular/common/http";
   styleUrls: ['./tmp-video-demo.component.css']
 })
 export class TmpVideoDemoComponent implements OnInit {
-  baseURL: string = "https://api.lbry.tv/api/v1/proxy";
+  APIUrl: string = "https://api.lbry.tv/api/v1/proxy";
   streamUrl: string = "";
   thumbnails: string[] = [];
   streamUrlList: string[] = [];
@@ -21,7 +21,7 @@ export class TmpVideoDemoComponent implements OnInit {
   resolveUriAndSetStreamSrc(uri: string) {
     if (uri) {
       this.http
-        .post<any>(this.baseURL, {
+        .post<any>(this.APIUrl, {
           method: "resolve",
           params: { urls: uri },
         })
@@ -37,11 +37,14 @@ export class TmpVideoDemoComponent implements OnInit {
                   result?.value?.stream_type
                 );
               } else {
+                const fullUri: string = result.canonical_url.substring(
+                  result.short_url.indexOf("lbry://") + 'lbry://'.length
+                ).replace('#', ':').replace('#', ':')
                 const confirmedUri: string = result.short_url.substring(
                   result.short_url.indexOf("lbry://")
                 );
                 this.http
-                  .post<any>(this.baseURL, {
+                  .post<any>(this.APIUrl, {
                     method: "get",
                     params: {
                       uri: confirmedUri,
@@ -64,7 +67,7 @@ export class TmpVideoDemoComponent implements OnInit {
 
   getAndShowMostRecentVideos() {
     this.http
-      .post<any>(this.baseURL, {
+      .post<any>(this.APIUrl, {
         method: "claim_search",
         params: { stream_types: ["video"], any_tags: "tech" },
       })
@@ -79,7 +82,7 @@ export class TmpVideoDemoComponent implements OnInit {
                 vidList[i].short_url.indexOf("lbry://")
               );
               this.http
-                .post<any>(this.baseURL, {
+                .post<any>(this.APIUrl, {
                   method: "get",
                   params: {
                     uri: uri,
