@@ -1,0 +1,28 @@
+input {
+  width: 20vw;
+  margin: 10px 10px 20px 10px;
+}
+
+span,
+label {
+  margin-left: 10px;
+}
+
+video {
+  width: 640px;
+  height: 360px;
+}
+
+img {
+  cursor: pointer;
+  margin: 20px;
+  width: 288px;
+  height: 162px;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
