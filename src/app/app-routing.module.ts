@@ -22,8 +22,22 @@ function matchLBRYMediaUri(url : UrlSegment[]) {
   };
 }
 
+function matchLBRYChannelUri(url : UrlSegment[]) {
+  if(url.length === 1 && url[0].path[0] === '@') {
+    return {consumed: url};
+  }
+  return null;
+}
+
 const routes: Routes = [
   { path: '', component: VideoListComponent },
+
+  // Catch anything with one segment that starts with @ as a channel.
+  // Things with one segment that don't start with @ could be media uris.
+  //
+  // For now, redirect back to root. Eventually we get a @channel component.
+  { matcher: matchLBRYChannelUri, redirectTo: '' },
+
   { matcher: matchLBRYMediaUri, component: VideoComponent },
 ];
 
