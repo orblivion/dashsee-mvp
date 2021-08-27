@@ -12,7 +12,10 @@ import { checkMediaUri } from '../lbry-media-uri';
 export class VideoComponent implements OnInit {
   video? : VideoNew;
   streamUrl? : string;
-  notFound : boolean = false; // set to true if it tried and failed to find a media item
+
+  // Error conditions. Set to true to display the appropriate error message.
+  notFound : boolean = false; // tried and failed to find a media item
+  notVideo : boolean = false; // something other than a video found
 
   constructor(private videoService : VideoService, private route : ActivatedRoute, private router : Router) { }
 
@@ -30,11 +33,9 @@ export class VideoComponent implements OnInit {
         },
         error: (error) => {
           if (error.type === VideoServiceError.NotFound) {
-            // TODO
-            alert("404'd!")
+            this.notFound = true
           } else if (error.type === VideoServiceError.NotVideo) {
-            // TODO
-            alert("not a video!")
+            this.notVideo = true
           } else {
             console.error("There was an error!", error);
           }

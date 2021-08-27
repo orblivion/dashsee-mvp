@@ -1,5 +1,10 @@
-<div *ngIf="notFound; else Ready">
-Not found!
+<div *ngIf="notFound || notVideo; else Ready">
+  <div *ngIf="notFound">
+  Not found!
+  </div>
+  <div *ngIf="notVideo">
+  Not video!
+  </div>
 </div>
 <ng-template #Ready>
   <div *ngIf="video; else Loading">
