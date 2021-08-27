@@ -1,5 +1,10 @@
+export interface Channel {
+  handle: string;
+  name: string;
+  thumbnailUrl: string;
+}
 export interface Video {
-  channelName: string | undefined;
+  channel: Channel | undefined;
 
   title: string;
   thumbnailUrl: string;

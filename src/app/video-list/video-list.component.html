@@ -5,7 +5,7 @@
         alt="video thumbnail"
         routerLink="{{ video.canonicalUri }}">
       <br>
-      <a routerLink="{{ video.canonicalUri }}"><span>{{video.channelName}}:</span> {{video.title}}</a>
+      <a routerLink="{{ video.canonicalUri }}"><span *ngIf="video.channel">{{ video.channel.handle }}:</span> {{video.title}}</a>
     </div>
   </div>
 </div>

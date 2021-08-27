@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Video } from './video';
+import { Video, Channel } from './video'; // TODO different file name?
 import { Observable, of } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 import { StatusService } from './status.service';
@@ -58,8 +58,16 @@ export class VideoService {
   }
 
   private buildVideo(apiVideo: any): Video {
+    let channel : Channel | undefined;
+    if (apiVideo.signing_channel) {
+      channel = {
+        handle: apiVideo.signing_channel?.name,
+        name: apiVideo.signing_channel?.value.title,
+        thumbnailUrl: apiVideo.signing_channel?.value.thumbnail.url,
+      }
+    }
     return {
-      channelName: apiVideo.signing_channel?.name,
+      channel,
 
       title: apiVideo.value.title,
       description: apiVideo?.value?.description,

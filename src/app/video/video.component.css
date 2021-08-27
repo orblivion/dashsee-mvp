@@ -1,9 +1,50 @@
 video {
-  width: 640px;
-  height: 360px;
+    max-height: calc(100vh - 83px - 22px - 100px);
+    max-width: 100%;
 }
 
-img {
-  width: 640px;
-  height: 360px;
+.video-container {
+  max-height: calc(100vh - 83px - 22px - 100px);
+  text-align: center;
+  background: #5D5FEF;
+  border-radius: 15px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.video-details {
+  margin-top: 17px;
+  border: 1px solid #DDDDDD;
+}
+
+.video-title {
+  margin-top: 16px;
+  margin-left: 22px;
+}
+
+.channel-info {
+  margin-top: 34px;
+  margin-left: 30px;
+  height: 50px;
+}
+
+.channel-thumbnail {
+  float: left;
+  height: 50px;
+  width: 50px;
+  border-radius: 50px;
+  background: #3EC6FF;
+  margin-right: 10px;
+}
+
+.channel-names div {
+  padding: 3px;
+}
+
+.video-description {
+  margin-top: 38px;
+  margin-left: 29px;
+  margin-right: 112px;
 }

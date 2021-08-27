@@ -10,6 +10,7 @@ p    {color: #444;}
 }
 
 .header {
+    height: 83px;
     display: flex;
     flex-direction: column;
 
@@ -47,10 +48,9 @@ p    {color: #444;}
 	width: 100%
 }
 
-.video-icontainer {
-    border: 2px solid #E5E5E5;
-}
-
-.video-details {
-    border: 2px solid #E5E5E5;
+main {
+  width: calc(100% - 45px * 2);
+  margin-left: 45px;
+  margin-right: 45px;
+  margin-top: 22px;
 }
