@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { VideoNew } from '../video';
+import { VideoService, VideoServiceError } from '../video.service';
 
 @Component({
   selector: 'app-tmp-video-demo',
@@ -7,95 +8,54 @@ import { HttpClient } from "@angular/common/http";
   styleUrls: ['./tmp-video-demo.component.css']
 })
 export class TmpVideoDemoComponent implements OnInit {
-  APIUrl: string = "https://api.lbry.tv/api/v1/proxy";
   streamUrl: string = "";
   thumbnails: string[] = [];
   streamUrlList: string[] = [];
 
-  constructor(private http: HttpClient) {
+  constructor(private videoService: VideoService) {
   }
   ngOnInit(): void {
     this.getAndShowMostRecentVideos();
   }
 
-  resolveUriAndSetStreamSrc(uri: string) {
-    if (uri) {
-      this.http
-        .post<any>(this.APIUrl, {
-          method: "resolve",
-          params: { urls: uri },
-        })
+  resolveUriAndSetStreamSrc(mediaUri: string) {
+    if (mediaUri) {
+      this.videoService.getMediaData(mediaUri)
         .subscribe({
-          next: (data) => {
-            if (uri in data.result) {
-              const result = data.result[uri];
-              if ("error" in result) {
-                console.error("Error when resolving URI!", result.error.text);
-              } else if (result?.value?.stream_type != "video") {
-                console.error(
-                  "URI don't resolve to a video!",
-                  result?.value?.stream_type
-                );
-              } else {
-                const fullUri: string = result.canonical_url.substring(
-                  result.short_url.indexOf("lbry://") + 'lbry://'.length
-                ).replace('#', ':').replace('#', ':')
-                const confirmedUri: string = result.short_url.substring(
-                  result.short_url.indexOf("lbry://")
-                );
-                this.http
-                  .post<any>(this.APIUrl, {
-                    method: "get",
-                    params: {
-                      uri: confirmedUri,
-                      save_file: false,
-                    },
-                  })
-                  .subscribe((data) => {
-                    this.streamUrl = data?.result?.streaming_url;
-                    console.log("Stream URL = ", this.streamUrl);
-                  });
-              }
-            }
+          next: (video) => {
+            this.videoService.getStreamUrl(video)
+              .subscribe((streamUrl) => {
+                this.streamUrl = streamUrl;
+                console.log("Stream URL = ", this.streamUrl);
+              });
           },
           error: (error) => {
-            console.error("There was an error!", error);
+            if (error.type === VideoServiceError.NotFound) {
+              // TODO
+              alert("404'd!")
+            } else if (error.type === VideoServiceError.NotVideo) {
+              // TODO
+              alert("not a video!")
+            } else {
+              console.error("There was an error!", error);
+            }
           },
         });
     }
   }
 
   getAndShowMostRecentVideos() {
-    this.http
-      .post<any>(this.APIUrl, {
-        method: "claim_search",
-        params: { stream_types: ["video"], any_tags: "tech" },
-      })
-      .subscribe((data) => {
-        if (data?.result?.items) {
-          const vidList: any[] = data?.result?.items;
-          if (vidList.length > 0) {
-            const maxLen = vidList.length > 5 ? 5 : vidList.length;
-            for (let i = 0; i < maxLen; i++) {
-              this.thumbnails.push(vidList[i]?.value?.thumbnail?.url);
-              const uri: string = vidList[i].short_url.substring(
-                vidList[i].short_url.indexOf("lbry://")
-              );
-              this.http
-                .post<any>(this.APIUrl, {
-                  method: "get",
-                  params: {
-                    uri: uri,
-                    save_file: false,
-                  },
-                })
-                .subscribe((data) => {
-                  this.streamUrlList.push(data?.result?.streaming_url);
-                });
-            }
-          }
-        }
-        console.log("Stream URL = ", this.streamUrl);
+    this.videoService.getRecentVideos(["tech"])
+      .subscribe((vidList) => {
+        const shownVidList = vidList.slice(0, 5)
+        shownVidList.forEach((video) => {
+          this.thumbnails.push(video.thumbnailUrl);
+          this.videoService.getStreamUrl(video)
+            .subscribe((streamUrl) => {
+              this.streamUrlList.push(streamUrl);
+              console.log("Stream URL = ", this.streamUrl);
+            });
+        })
       });
   }
 
