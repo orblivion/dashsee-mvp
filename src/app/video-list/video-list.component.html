@@ -1,7 +1,6 @@
 <div>
   <div class="flex-container">
     <div *ngFor="let video of videos; let i = index">
-    <!-- TODO check uri? -->
       <img src={{video.thumbnailUrl}}
         alt="video thumbnail"
         routerLink="{{ video.canonicalUri }}">
