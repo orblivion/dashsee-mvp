@@ -94,7 +94,6 @@ export class VideoService {
       })
   }
 
-  // TODO - eventually replaces getVideo, or called by it as a private
   getVideo(mediaUri: string): Observable<Video> {
     return new Observable(subscriber => {
       this.http
