@@ -1,7 +1,12 @@
-<ul class="heroes">
-  <li *ngFor="let video of videos">
-    <a routerLink="/@{{video.username}}:{{video.usernameClaim}}/{{video.mediaHash}}:{{video.mediaHashClaim}}">
-      {{video.username}}: {{video.name}}
-    </a>
-  </li>
-</ul>
+<div>
+  <div class="flex-container">
+    <div *ngFor="let video of videos; let i = index">
+    <!-- TODO check uri? -->
+      <img src={{video.thumbnailUrl}}
+        alt="video thumbnail"
+        routerLink="{{ video.canonicalUri }}">
+      <br>
+      <a routerLink="{{ video.canonicalUri }}"><span>{{video.channelName}}:</span> {{video.title}}</a>
+    </div>
+  </div>
+</div>

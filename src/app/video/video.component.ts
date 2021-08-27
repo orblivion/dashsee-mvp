@@ -19,7 +19,7 @@ export class VideoComponent implements OnInit {
 
   constructor(private videoService : VideoService, private route : ActivatedRoute, private router : Router) { }
 
-  setVideo(mediaUri: string) {
+  getAndShowVideo(mediaUri: string) {
     this.videoService.getVideoNew(mediaUri)
       .subscribe({
         next: (video) => {
@@ -55,7 +55,7 @@ export class VideoComponent implements OnInit {
     const mediaUri = this.route.snapshot.paramMap.get('mediaUri')
 
     if (mediaUri) {
-      this.setVideo(mediaUri)
+      this.getAndShowVideo(mediaUri)
     } else {
       // I think the router will prevent this case, but the type system forces me to make
       // this if statement. In case the type system is right, I'm putting this here.

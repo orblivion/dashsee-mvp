@@ -1,0 +1,13 @@
+img {
+  cursor: pointer;
+  margin: 20px;
+  width: 288px;
+  height: 162px;
+}
+
+.flex-container {
+  /* TODO display: flex; */
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}

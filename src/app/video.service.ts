@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Video, VideoNew } from './video';
-import { VIDEOS } from './mock-video';
+import { VideoNew } from './video';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 import { StatusService } from './status.service';
@@ -168,10 +167,6 @@ export class VideoService {
           },
         })
     });
-  }
-
-  getVideos(): Observable<Video[]> {
-    return of(VIDEOS);
   }
 
 }
