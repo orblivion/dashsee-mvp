@@ -20,7 +20,7 @@ export class TmpVideoDemoComponent implements OnInit {
 
   resolveUriAndSetStreamSrc(mediaUri: string) {
     if (mediaUri) {
-      this.videoService.getMediaData(mediaUri)
+      this.videoService.getVideoNew(mediaUri)
         .subscribe({
           next: (video) => {
             this.videoService.getStreamUrl(video)

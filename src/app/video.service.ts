@@ -4,7 +4,6 @@ import { VIDEOS } from './mock-video';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 import { StatusService } from './status.service';
-import { LBRYMediaClaims, LBRYMediaUrlParts } from './mediaIds';
 
 export enum VideoServiceError {
   NotFound,
@@ -20,19 +19,6 @@ export class VideoService {
   APIUrl: string = "https://api.lbry.tv/api/v1/proxy";
 
   constructor(private statusService : StatusService, private http: HttpClient) { }
-
-  // TODO - Do I really want this bang operator?
-
-  getVideo(urlParts : LBRYMediaUrlParts): Observable<Video> {
-    const video = VIDEOS.find(v => (
-      v.username === urlParts.ids.username &&
-      v.usernameClaim === urlParts.claims.usernameClaim &&
-      v.mediaHash === urlParts.ids.mediaHash &&
-      v.mediaHashClaim === urlParts.claims.mediaHashClaim
-    ))!;
-    this.statusService.add("loaded")
-    return of(video);
-  }
 
   // TODO - what is a "confirmed" uri? just want to name/comment things properly
   getStreamUrl(video: VideoNew): Observable<any> {
@@ -80,7 +66,6 @@ export class VideoService {
       description: apiVideo?.value?.description,
       thumbnailUrl: apiVideo.value.thumbnail.url,
 
-      // We assume that we trust the API to not send us an invalid canonicalUri (TODO - right?)
       canonicalUri: apiVideo.canonical_url.substring(
         apiVideo.canonical_url.indexOf("lbry://") + 'lbry://'.length
       ).replace('#', ':').replace('#', ':'),
@@ -111,7 +96,7 @@ export class VideoService {
   }
 
   // TODO - eventually replaces getVideo, or called by it as a private
-  getMediaData(mediaUri: string): Observable<VideoNew> {
+  getVideoNew(mediaUri: string): Observable<VideoNew> {
     return new Observable(subscriber => {
       this.http
         .post<any>(this.APIUrl, {
@@ -189,14 +174,4 @@ export class VideoService {
     return of(VIDEOS);
   }
 
-  getClaims(username : string, mediaHash : string) : Observable<LBRYMediaClaims> {
-    const video = VIDEOS.find(v => (
-      v.username === username &&
-      v.mediaHash === mediaHash
-    ))!;
-    return of({
-      usernameClaim: video.usernameClaim,
-      mediaHashClaim: video.mediaHashClaim,
-    });
-  }
 }

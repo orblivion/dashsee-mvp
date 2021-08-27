@@ -4,10 +4,15 @@ Not found!
 <ng-template #Ready>
   <div *ngIf="video; else Loading">
     <div class='video-container'>
-      <video></video>
+      <video *ngIf="streamUrl; else thumbNail" src="{{streamUrl}}" controls>
+        Your Browser Dosen't Support HTML5 Video. Please Upgrade...
+      </video>
+      <ng-template #thumbNail>
+        <img src={{video.thumbnailUrl}} alt="video thumbnail">
+      </ng-template>
     </div>
     <div class='video-details'>
-      <h1>{{video.name}}</h1>
+      <h1>{{video.title}}</h1>
       <p>{{video.description}}</p>
     </div>
   </div>
