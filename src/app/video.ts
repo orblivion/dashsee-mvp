@@ -1,4 +1,4 @@
-export interface VideoNew {
+export interface Video {
   channelName: string | undefined;
 
   title: string;

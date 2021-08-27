@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { VideoNew } from './video';
+import { Video } from './video';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 import { StatusService } from './status.service';
@@ -20,7 +20,7 @@ export class VideoService {
   constructor(private statusService : StatusService, private http: HttpClient) { }
 
   // TODO - what is a "confirmed" uri? just want to name/comment things properly
-  getStreamUrl(video: VideoNew): Observable<any> {
+  getStreamUrl(video: Video): Observable<any> {
     return new Observable(subscriber => {
       this.http
         .post<any>(this.APIUrl, {
@@ -57,7 +57,7 @@ export class VideoService {
     })
   }
 
-  private buildVideo(apiVideo: any): VideoNew {
+  private buildVideo(apiVideo: any): Video {
     return {
       channelName: apiVideo.signing_channel?.name,
 
@@ -75,7 +75,7 @@ export class VideoService {
     }
   }
 
-  getRecentVideos(tags: string[]): Observable<VideoNew[]> {
+  getRecentVideos(tags: string[]): Observable<Video[]> {
     return new Observable(subscriber => {
       this.http
         .post<any>(this.APIUrl, {
@@ -95,7 +95,7 @@ export class VideoService {
   }
 
   // TODO - eventually replaces getVideo, or called by it as a private
-  getVideoNew(mediaUri: string): Observable<VideoNew> {
+  getVideo(mediaUri: string): Observable<Video> {
     return new Observable(subscriber => {
       this.http
         .post<any>(this.APIUrl, {

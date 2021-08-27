@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router'
-import { VideoNew } from '../video';
+import { Video } from '../video';
 import { VideoService, VideoServiceError } from '../video.service';
 import { checkMediaUri } from '../lbry-media-uri';
 
@@ -10,7 +10,7 @@ import { checkMediaUri } from '../lbry-media-uri';
   styleUrls: ['./video.component.css']
 })
 export class VideoComponent implements OnInit {
-  video? : VideoNew;
+  video? : Video;
   streamUrl? : string;
 
   // Error conditions. Set to true to display the appropriate error message.
@@ -20,7 +20,7 @@ export class VideoComponent implements OnInit {
   constructor(private videoService : VideoService, private route : ActivatedRoute, private router : Router) { }
 
   getAndShowVideo(mediaUri: string) {
-    this.videoService.getVideoNew(mediaUri)
+    this.videoService.getVideo(mediaUri)
       .subscribe({
         next: (video) => {
           this.video = video

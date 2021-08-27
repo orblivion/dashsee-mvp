@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { VideoNew } from '../video';
+import { Video } from '../video';
 import { VideoService } from '../video.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { VideoService } from '../video.service';
   styleUrls: ['./video-list.component.css']
 })
 export class VideoListComponent implements OnInit {
-  videos : VideoNew[] = [];
+  videos : Video[] = [];
 
   constructor(private videoService : VideoService) { }
 
