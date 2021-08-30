@@ -17,6 +17,7 @@ video {
 .video-details {
   margin-top: 17px;
   border: 1px solid #DDDDDD;
+  font-family: 'Arimo',Arial,Helvetica Neue,Helvetica,sans-serif;
 }
 
 .video-title {
