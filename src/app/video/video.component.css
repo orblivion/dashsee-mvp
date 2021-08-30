@@ -1,6 +1,6 @@
 video {
-    max-height: calc(100vh - 83px - 22px - 100px);
-    max-width: 100%;
+  max-height: calc(100vh - 83px - 22px - 100px);
+  max-width: 100%;
 }
 
 .video-container {
