@@ -5,7 +5,7 @@
         Your Browser Dosen't Support HTML5 Video. Please Upgrade...
       </video>
       <ng-template #thumbNail>
-        <img  class='video-frame' src={{video.thumbnailUrl}} alt="video thumbnail">
+        <img class='video-frame' src={{video.thumbnailUrl}} alt="video thumbnail">
       </ng-template>
     </ng-container>
     <ng-template #IfNotFound>
@@ -24,7 +24,8 @@
     <div *ngIf="video">
       <h1 class='video-title'>{{video.title}}</h1>
       <div *ngIf="video.channel" class='channel-info' routerLink="{{ video.channel.handle }}">
-        <img class='channel-thumbnail' src="{{ video.channel.thumbnailUrl }}"/>
+        <img *ngIf="video.channel.thumbnailUrl; else NoAvatar" class='channel-thumbnail' src="{{ video.channel.thumbnailUrl }}"/>
+        <ng-template #NoAvatar><div class='channel-thumbnail'></div></ng-template>
         <div class='channel-names'>
           <div>{{ video.channel.name }}</div>
           <div>{{ video.channel.handle }}</div>
