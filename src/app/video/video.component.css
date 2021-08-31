@@ -1,17 +1,20 @@
-.video-frame { /* video and thumbnail */
-  max-height: calc(100vh - 83px - 22px - 100px);
-  max-width: 100%;
+.video-section {
+  width: 100%;
+}
+
+.video-frame {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
 }
 
 .video-container {
-  max-height: calc(100vh - 83px - 22px - 100px);
+  width: 100%;
+  height: min(calc(100vw * (9 / 16) - 100px), calc(100vh - 150px));
   text-align: center;
-  background: #5D5FEF;
-  border-radius: 15px;
+  background: #000;
   padding-top: 4px;
   padding-bottom: 4px;
-  padding-left: 15px;
-  padding-right: 15px;
 }
 
 .video-details {
