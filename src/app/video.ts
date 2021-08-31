@@ -1,7 +1,7 @@
 export interface Channel {
   handle: string;
   name: string;
-  thumbnailUrl: string;
+  thumbnailUrl: string | undefined;
 }
 export interface Video {
   channel: Channel | undefined;

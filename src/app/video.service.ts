@@ -63,7 +63,7 @@ export class VideoService {
       channel = {
         handle: apiVideo.signing_channel?.name,
         name: apiVideo.signing_channel?.value.title,
-        thumbnailUrl: apiVideo.signing_channel?.value.thumbnail.url,
+        thumbnailUrl: apiVideo.signing_channel?.value.thumbnail?.url,
       }
     }
     return {
