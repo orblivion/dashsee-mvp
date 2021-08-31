@@ -59,6 +59,10 @@
   padding: 3px;
 }
 
+.channel-handle {
+  color: #55F;
+}
+
 .video-description {
   margin-top: 38px;
   margin-left: 29px;
