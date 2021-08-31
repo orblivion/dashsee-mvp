@@ -10,7 +10,7 @@
 
 .video-container {
   width: 100%;
-  height: min(calc(100vw * (9 / 16) - 100px), calc(100vh - 150px));
+  height: min(calc(100vw * (9 / 16) ), calc(100vh - 150px));
   text-align: center;
   background: #000;
   padding-top: 4px;
