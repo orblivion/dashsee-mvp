@@ -1,34 +1,36 @@
-<div *ngIf="notFound || notVideo; else Ready">
-  <div *ngIf="notFound">
-  Not found!
+<div class='video-section'>
+  <div class='video-container'>
+    <ng-container *ngIf="video; else IfNotFound">
+      <video class='video-frame' *ngIf="streamUrl; else thumbNail" src="{{streamUrl}}" controls>
+        Your Browser Dosen't Support HTML5 Video. Please Upgrade...
+      </video>
+      <ng-template #thumbNail>
+        <img  class='video-frame' src={{video.thumbnailUrl}} alt="video thumbnail">
+      </ng-template>
+    </ng-container>
+    <ng-template #IfNotFound>
+      <ng-container *ngIf="notFound; else IfNotVideo">
+        <p class="error-message">Sorry, this video was not found.</p>
+      </ng-container>
+    </ng-template>
+    <ng-template #IfNotVideo>
+      <ng-container *ngIf="notVideo; else Loading">
+        <p class="error-message">Sorry, this is not a video.</p>
+      </ng-container>
+    </ng-template>
+    <ng-template #Loading><p class="loading-message">loading...</p></ng-template>
   </div>
-  <div *ngIf="notVideo">
-  Not video!
-  </div>
-</div>
-<ng-template #Ready>
-  <div *ngIf="video; else Loading">
-    <div class='video-section'>
-      <div class='video-container'>
-        <video class='video-frame' *ngIf="streamUrl; else thumbNail" src="{{streamUrl}}" controls>
-          Your Browser Dosen't Support HTML5 Video. Please Upgrade...
-        </video>
-        <ng-template #thumbNail>
-          <img  class='video-frame' src={{video.thumbnailUrl}} alt="video thumbnail">
-        </ng-template>
-      </div>
-      <div class='video-details'>
-        <h1 class='video-title'>{{video.title}}</h1>
-        <div *ngIf="video.channel" class='channel-info' routerLink="{{ video.channel.handle }}">
-          <img class='channel-thumbnail' src="{{ video.channel.thumbnailUrl }}"/>
-          <div class='channel-names'>
-            <div>{{ video.channel.name }}</div>
-            <div>{{ video.channel.handle }}</div>
-          </div>
+  <div class='video-details'>
+    <div *ngIf="video">
+      <h1 class='video-title'>{{video.title}}</h1>
+      <div *ngIf="video.channel" class='channel-info' routerLink="{{ video.channel.handle }}">
+        <img class='channel-thumbnail' src="{{ video.channel.thumbnailUrl }}"/>
+        <div class='channel-names'>
+          <div>{{ video.channel.name }}</div>
+          <div>{{ video.channel.handle }}</div>
         </div>
-        <p class='video-description'>{{video.description}}</p>
       </div>
+      <p class='video-description'>{{video.description}}</p>
     </div>
   </div>
-  <ng-template #Loading>loading...</ng-template>
-</ng-template>
+</div>
