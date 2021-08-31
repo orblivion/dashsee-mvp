@@ -37,8 +37,8 @@ const routes: Routes = [
   //
   // For now, redirect back to root. Eventually we get a @channel component.
   { matcher: matchLBRYChannelUri, redirectTo: '' },
-
   { matcher: matchLBRYMediaUri, component: VideoComponent },
+  { path: "**", redirectTo: '' }, // TODO maybe a proper 404
 ];
 
 @NgModule({

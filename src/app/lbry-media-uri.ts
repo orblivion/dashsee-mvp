@@ -16,5 +16,9 @@ export function checkMediaUri(uri: string) {
     return false;
   }
 
+  if (segments.length > 1 && segments[0][0] != '@') {
+    return false;
+  }
+
   return true
 }
