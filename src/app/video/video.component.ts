@@ -19,8 +19,8 @@ export class VideoComponent implements OnInit {
 
   constructor(private videoService : VideoService, private route : ActivatedRoute, private router : Router) { }
 
-  getAndShowVideo(mediaUri: string) {
-    this.videoService.getVideo(mediaUri)
+  getAndShowVideo(mediaUriEncoded: string) {
+    this.videoService.getVideo(mediaUriEncoded)
       .subscribe({
         next: (video) => {
           this.video = video
@@ -52,10 +52,10 @@ export class VideoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const mediaUri = this.route.snapshot.paramMap.get('mediaUri')
+    const mediaUriEncoded = this.route.snapshot.paramMap.get('mediaUriEncoded')
 
-    if (mediaUri) {
-      this.getAndShowVideo(mediaUri)
+    if (mediaUriEncoded) {
+      this.getAndShowVideo(mediaUriEncoded)
     } else {
       // I think the router will prevent this case, but the type system forces me to make
       // this if statement. In case the type system is right, I'm putting this here.

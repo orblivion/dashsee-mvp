@@ -102,34 +102,37 @@ export class VideoService {
       })
   }
 
-  getVideo(mediaUri: string): Observable<Video> {
+  getVideo(mediaUriEncoded: string): Observable<Video> {
+    // We get the mediaUri from the brower's URL. It's URLencoded. Turns out
+    // the API wants unicode as-is, so we decode it before using it.
+    let mediaUriDecoded = decodeURI(mediaUriEncoded)
     return new Observable(subscriber => {
       this.http
         .post<any>(this.APIUrl, {
           method: "resolve",
-          params: { urls: mediaUri },
+          params: { urls: mediaUriDecoded },
         })
         .subscribe({
           next: (data) =>
           {
             if (data?.error !== undefined) {
-              console.error("error for " + mediaUri, data['error'])
+              console.error("error for " + mediaUriDecoded, data['error'])
               subscriber.error({
                 type: VideoServiceError.Unknown,
                 msg: "data.error: " + JSON.stringify(data?.error, null, 2),
               })
               return
             }
-            if (data?.result?.[mediaUri] === undefined) {
-              console.info("data.result['mediaUri'] not found: " + mediaUri)
+            if (data?.result?.[mediaUriDecoded] === undefined) {
+              console.info("data.result['mediaUriDecoded'] not found: " + mediaUriDecoded)
               subscriber.error({
-                msg: "data.result['mediaUri'] not found",
+                msg: "data.result['mediaUriDecoded'] not found",
                 type: VideoServiceError.Unknown,
               })
               return
             }
 
-            const result = data.result[mediaUri];
+            const result = data.result[mediaUriDecoded];
 
             if ("error" in result) {
               if (result.error.name === API_NOT_FOUND) {
@@ -139,9 +142,9 @@ export class VideoService {
                   type: VideoServiceError.NotFound,
                 })
               } else {
-                console.error("Error when resolving URI! " + mediaUri, result.error.text);
+                console.error("Error when resolving URI! " + mediaUriDecoded, result.error.text);
                 subscriber.error({
-                  msg: "result.error" + JSON.stringify(result.error, null, 2),
+                  msg: "result.error: " + JSON.stringify(result.error, null, 2),
                   type: VideoServiceError.Unknown,
                 })
               }
@@ -149,7 +152,7 @@ export class VideoService {
             }
             if (result?.value?.stream_type != "video") {
               console.info(
-                "URI don't resolve to a video! " + mediaUri,
+                "URI don't resolve to a video! " + mediaUriDecoded,
                 result?.value?.stream_type
               );
               subscriber.error({
@@ -165,7 +168,7 @@ export class VideoService {
             subscriber.complete()
           },
           error: (error) => {
-            console.error("getVideo: there was an error! " + mediaUri, error);
+            console.error("getVideo: there was an error! " + mediaUriDecoded, error);
             subscriber.error({
               msg: "getVideo: there was an error! " + JSON.stringify(error, null, 2),
               type: VideoServiceError.Unknown,

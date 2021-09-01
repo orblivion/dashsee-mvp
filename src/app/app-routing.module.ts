@@ -8,16 +8,16 @@ function matchLBRYMediaUri(url : UrlSegment[]) {
   // We'll just assume that any string is fine, so long as it's at most
   // one slash and one colon in each segment.
 
-  let mediaUri = url.join('/')
+  let mediaUriEncoded = url.join('/')
 
-  if (!checkMediaUri(mediaUri)) {
+  if (!checkMediaUri(mediaUriEncoded)) {
     return null;
   }
 
   return {
     consumed: url,
     posParams: {
-      mediaUri: new UrlSegment(mediaUri, {}),
+      mediaUriEncoded: new UrlSegment(mediaUriEncoded, {}),
     }
   };
 }
