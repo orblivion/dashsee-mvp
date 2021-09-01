@@ -51,8 +51,9 @@ p    {color: #444;}
 .header-logo div {
     float: left;
     margin: 0px 0px 0px 0px;
-    padding: 5px 0px 0px 10px;
-    font-size: 2em;
+    padding: 0px 0px 0px 10px;
+    font-size: 2.5em;
+    font-family: 'Nerko One',Arial,Helvetica Neue,Helvetica,sans-serif;
 }
 
 .header-logo img {
