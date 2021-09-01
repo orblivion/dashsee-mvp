@@ -64,6 +64,7 @@
 }
 
 .video-description {
+  white-space: pre-wrap;
   margin-top: 38px;
   margin-left: 29px;
   margin-right: 112px;
