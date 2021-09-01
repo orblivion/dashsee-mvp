@@ -7,10 +7,11 @@ p    {color: #444;}
     /* Stick to the top */
     position: sticky;
     top: 0;
+    font-family: 'Arimo',Arial,Helvetica Neue,Helvetica,sans-serif;
 }
 
 .header {
-    height: 83px;
+    height: 60px;
     display: flex;
     flex-direction: column;
 
@@ -31,25 +32,93 @@ p    {color: #444;}
 
 .header-left {
     width: 25%;
-    background-color:grey;
+    background-color: #FFF;
+    color: #868686;
+}
+
+.header-logo div {
+    float: left;
+    margin: 0px 0px 0px 0px;
+    padding: 5px 0px 0px 10px;
+    font-size: 2em;
+}
+
+.header-logo img {
+    float: left;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #DDDDDD;
+}
+
+.header-logo {
+    width: 200px;
+    padding: 0px;
+    margin: 0px;
 }
 
 .header-middle {
     /* Take the remaining width */
     flex-grow: 1;
+    background-color: #FFF;
 }
 
 .header-right {
     width: 25%;
-    background-color:grey;
+    background-color: #FFF;
 }
 
-.header-middle input {
-	width: 100%
+.header-right span {
+    padding: 1em;
+    float: right;
+    border-radius: 10px;
+}
+
+#header-btn-sign-up {
+    border: 2px solid #DDDDDD;
+    background: #868686;
+    color: #E5E5E5;
+}
+
+#header-btn-log-in {
+    color: #868686;
+    border: 2px solid #FFFFFF;
+}
+
+.search-bar {
+    height: 2.5em;
+    margin: 5px 10px 0px 10px;
+    padding: 0px;
+    border: 1px solid #DDDDDD;
+    border-radius: 10px;
+}
+
+.search-bar div {
+    padding: 0px;
+    margin: 5px 10px 0px 0px;
+    display: inline;
+    float: left;
+}
+
+.search-bar-input-wrapper {
+    width: calc(100% - 80px);
+    padding: 0px;
+    margin: 0px;
+}
+
+.search-bar input {
+    width: 100%;
+    margin: 0px;
+    border: none;
+}
+
+.search-bar img {
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
 }
 
 main {
-  width: clamp(calc(100% - 45px * 2), 600px, 100%);
-  margin-left: calc(50% - 0.5 * clamp(calc(100% - 45px * 2), 600px, 100%));
-  margin-top: 22px;
+    width: clamp(calc(100% - 45px * 2), 600px, 100%);
+    margin-left: calc(50% - 0.5 * clamp(calc(100% - 45px * 2), 600px, 100%));
+    margin-top: 22px;
 }
