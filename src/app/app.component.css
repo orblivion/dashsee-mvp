@@ -33,10 +33,10 @@ p    {color: #444;}
 .header-left {
     width: 25%;
     background-color: #FFF;
-    color: #868686;
+    color: #AAE;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 799px) {
   .header-logo div {
       display: none;
   }
