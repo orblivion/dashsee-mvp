@@ -46,9 +46,9 @@ export class VideoService {
             },
             error: (error) =>
             {
-              console.error("There was an error! " + video.confirmedUri, error);
+              console.error("getStreamUrl: there was an error! " + video.confirmedUri, error);
               subscriber.error({
-                msg: "There was an error! " + JSON.stringify(error, null, 2),
+                msg: "getStreamUrl: there was an error! " + JSON.stringify(error, null, 2),
                 type: VideoServiceError.Unknown,
               });
               return
@@ -165,9 +165,9 @@ export class VideoService {
             subscriber.complete()
           },
           error: (error) => {
-            console.error("There was an error! " + mediaUri, error);
+            console.error("getVideo: there was an error! " + mediaUri, error);
             subscriber.error({
-              msg: "There was an error! " + JSON.stringify(error, null, 2),
+              msg: "getVideo: there was an error! " + JSON.stringify(error, null, 2),
               type: VideoServiceError.Unknown,
             });
             return

@@ -37,7 +37,7 @@ export class VideoComponent implements OnInit {
           } else if (error.type === VideoServiceError.NotVideo) {
             this.notVideo = true
           } else {
-            console.error("There was an error!", error);
+            console.error("getAndShowVideo: there was an error!", error);
           }
         },
       });
