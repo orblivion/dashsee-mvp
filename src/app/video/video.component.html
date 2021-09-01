@@ -27,7 +27,7 @@
         <img *ngIf="video.channel.thumbnailUrl; else NoAvatar" class='channel-thumbnail' src="{{ video.channel.thumbnailUrl }}"/>
         <ng-template #NoAvatar><div class='channel-thumbnail'></div></ng-template>
         <div class='channel-names'>
-          <div>{{ video.channel.name }}</div>
+          <div class='channel-name'>{{ video.channel.name }}</div>
           <div class='channel-handle'>{{ video.channel.handle }}</div>
         </div>
       </div>
