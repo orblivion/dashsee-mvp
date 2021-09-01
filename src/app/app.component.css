@@ -36,6 +36,18 @@ p    {color: #444;}
     color: #868686;
 }
 
+@media only screen and (max-width: 800px) {
+  .header-logo div {
+      display: none;
+  }
+  #header-btn-sign-up {
+    padding: 5px;
+  }
+  #header-btn-log-in {
+    padding: 5px;
+  }
+}
+
 .header-logo div {
     float: left;
     margin: 0px 0px 0px 0px;
