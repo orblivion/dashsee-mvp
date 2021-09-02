@@ -12,7 +12,7 @@ const exampleVideo = {
   title: "my title",
   thumbnailUrl: "path/to/video/thumbnail.png",
   description: "my description",
-  confirmedUri: "Dash-Podcast-179:4",
+  confirmedUri: "lbry://Dash-Podcast-179#4",
   channel: {
     handle: "@DigitalCashNetwork",
     name: "Digital Cash Network",
@@ -118,7 +118,6 @@ describe('VideoComponent', () => {
       expect(compiled.querySelector('video.video-frame')).toBeNull()
     });
   });
-
 
   describe('service interaction', () => {
     let getVideoObservable: Observable<Video>
