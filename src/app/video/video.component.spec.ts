@@ -3,35 +3,40 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { VideoComponent } from './video.component';
+import { VideoService } from '../video.service';
+import { Video } from '../video';
+
+import { Observable, of } from 'rxjs';
 
 const exampleVideo = {
   title: "my title",
   thumbnailUrl: "path/to/video/thumbnail.png",
   description: "my description",
-  confirmedUri: "for#video",
+  confirmedUri: "Dash-Podcast-179:4",
   channel: {
-    handle: "@mychannel",
-    name: "my channel",
+    handle: "@DigitalCashNetwork",
+    name: "Digital Cash Network",
     thumbnailUrl: "path/to/channel/thumbnail.png",
   },
-  canonicalUri: "@full#uri/for#video",
+  canonicalUri: "@DigitalCashNetwork:c/Dash-Podcast-179:4",
 }
 
 describe('VideoComponent', () => {
   let component: VideoComponent;
+  let videoService: VideoService;
   let fixture: ComponentFixture<VideoComponent>;
 
-  beforeEach(async () => {
-    TestBed.configureTestingModule({
-      declarations: [ VideoComponent ],
-      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
-    })
-    fixture = TestBed.createComponent(VideoComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
   describe('display', () => {
+    beforeEach(async () => {
+      TestBed.configureTestingModule({
+        declarations: [ VideoComponent ],
+        imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      })
+      fixture = TestBed.createComponent(VideoComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
     it('should create', () => {
       expect(component).toBeTruthy();
     });
@@ -85,8 +90,8 @@ describe('VideoComponent', () => {
         .toContain('path/to/channel/thumbnail.png');
       expect(compiled.querySelector('img.channel-thumbnail')?.src)
         .toContain('path/to/channel/thumbnail.png');
-      expect(compiled.querySelector('.channel-name')?.textContent).toContain('my channel');
-      expect(compiled.querySelector('.channel-handle')?.textContent).toContain('@mychannel');
+      expect(compiled.querySelector('.channel-name')?.textContent).toContain('Digital Cash Network');
+      expect(compiled.querySelector('.channel-handle')?.textContent).toContain('@DigitalCashNetwork');
     });
     it(`should render video src and no thumbnail if there is a stream Url`, () => {
 
@@ -114,10 +119,47 @@ describe('VideoComponent', () => {
     });
   });
 
+
   describe('service interaction', () => {
+    let getVideoObservable: Observable<Video>
+    let getStreamUrlObservable: Observable<any>
     beforeEach(async () => {
       class MockVideoService {
+        getStreamUrl(video: Video): Observable<any> {
+          return getStreamUrlObservable
+        }
+        getVideo(mediaUriEncoded: string): Observable<Video> {
+          return getVideoObservable
+        }
       }
-    })
+
+      TestBed.configureTestingModule({
+        providers: [
+          VideoComponent,
+          { provide: VideoService, useClass: MockVideoService }
+        ],
+        imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([
+          {path: "@DigitalCashNetwork:c/Dash-Podcast-179:4", component: VideoComponent}
+        ])],
+      })
+
+      component = TestBed.inject(VideoComponent);
+      videoService = TestBed.inject(VideoService);
+    });
+    it('should get video successfully', (done) => {
+      let updateUrlSpy = spyOn(component, 'updateUrl')
+
+      getVideoObservable = new Observable(subscriber => {
+          subscriber.next(exampleVideo)
+          expect(component?.video?.title).toEqual("my title")
+          expect(updateUrlSpy).toHaveBeenCalledWith("@DigitalCashNetwork:c/Dash-Podcast-179:4")
+          done()
+      })
+      getStreamUrlObservable = of('path/to/video.mp4')
+
+      // actual uri here doesn't matter since we're mocking it
+      component.getAndShowVideo('Dash-Podcast-179:4')
+    });
+
   });
 });
