@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { VideoComponent } from './video/video.component';
-import { StatusComponent } from './status/status.component';
 import { AppRoutingModule } from './app-routing.module';
 import { VideoListComponent } from './video-list/video-list.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -13,7 +12,6 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     VideoComponent,
-    StatusComponent,
     VideoListComponent,
   ],
   imports: [

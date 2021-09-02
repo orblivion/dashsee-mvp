@@ -1,8 +1,0 @@
-<div *ngIf="statusService.statuses.length">
-
-  <h2>Statuses</h2>
-  <button class="clear"
-          (click)="statusService.clear()">Clear status updates</button>
-  <div *ngFor='let status of statusService.statuses'> {{status}} </div>
-
-</div>

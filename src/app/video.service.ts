@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Video, Channel } from './video'; // TODO different file name?
 import { Observable, of } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
-import { StatusService } from './status.service';
 
 export enum VideoServiceError {
   NotFound,
@@ -17,7 +16,7 @@ const API_NOT_FOUND = 'NOT_FOUND'
 export class VideoService {
   APIUrl: string = "https://api.lbry.tv/api/v1/proxy";
 
-  constructor(private statusService : StatusService, private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   // TODO - what is a "confirmed" uri? just want to name/comment things properly
   getStreamUrl(video: Video): Observable<any> {
