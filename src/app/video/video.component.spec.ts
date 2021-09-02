@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { VideoComponent } from './video.component';
-import { VideoService } from '../video.service';
+import { VideoService, VideoServiceError } from '../video.service';
 import { Video } from '../video';
 
 import { Observable, of } from 'rxjs';
@@ -146,6 +146,7 @@ describe('VideoComponent', () => {
       component = TestBed.inject(VideoComponent);
       videoService = TestBed.inject(VideoService);
     });
+
     it('should get video successfully', (done) => {
       let updateUrlSpy = spyOn(component, 'updateUrl')
 
@@ -163,6 +164,62 @@ describe('VideoComponent', () => {
 
           // confirm that we've redirected to the canonical url
           expect(updateUrlSpy).toHaveBeenCalledWith("@DigitalCashNetwork:c/Dash-Podcast-179:4")
+
+          done()
+      })
+      getStreamUrlObservable = of('path/to/video.mp4')
+
+      // actual uri here doesn't matter since we're mocking it
+      component.getAndShowVideo('Dash-Podcast-179:4')
+    });
+
+    it('should handle not-found successfully', (done) => {
+      let updateUrlSpy = spyOn(component, 'updateUrl')
+
+      getVideoObservable = new Observable(subscriber => {
+          // give the subscriber a "not found" error
+          subscriber.error({
+            type: VideoServiceError.NotFound,
+          })
+
+          // now observe the results
+
+          // confirm the state of the component
+          expect(component?.video).toBeUndefined;
+          expect(component?.streamUrl).toBeUndefined;
+          expect(component?.notFound).toBeTrue()
+          expect(component?.notVideo).toBeFalse()
+
+          // confirm that we've redirected to the canonical url
+          expect(updateUrlSpy.calls.count()).toEqual(0)
+
+          done()
+      })
+      getStreamUrlObservable = of('path/to/video.mp4')
+
+      // actual uri here doesn't matter since we're mocking it
+      component.getAndShowVideo('Dash-Podcast-179:4')
+    });
+
+    it('should handle not-video successfully', (done) => {
+      let updateUrlSpy = spyOn(component, 'updateUrl')
+
+      getVideoObservable = new Observable(subscriber => {
+          // give the subscriber a "not found" error
+          subscriber.error({
+            type: VideoServiceError.NotVideo,
+          })
+
+          // now observe the results
+
+          // confirm the state of the component
+          expect(component?.video).toBeUndefined;
+          expect(component?.streamUrl).toBeUndefined;
+          expect(component?.notFound).toBeFalse()
+          expect(component?.notVideo).toBeTrue()
+
+          // confirm that we've redirected to the canonical url
+          expect(updateUrlSpy.calls.count()).toEqual(0)
 
           done()
       })
