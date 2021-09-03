@@ -86,9 +86,7 @@ describe('VideoComponent', () => {
       const compiled = fixture.debugElement.nativeElement;
       expect(compiled.querySelector('.video-title')?.textContent).toContain('my title');
       expect(compiled.querySelector('.video-description')?.textContent).toContain('my description');
-      expect(compiled.querySelector('img.channel-thumbnail')?.src)
-        .toContain('path/to/channel/thumbnail.png');
-      expect(compiled.querySelector('img.channel-thumbnail')?.src)
+      expect(compiled.querySelector('.channel-thumbnail')?.src)
         .toContain('path/to/channel/thumbnail.png');
       expect(compiled.querySelector('.channel-name')?.textContent).toContain('Digital Cash Network');
       expect(compiled.querySelector('.channel-handle')?.textContent).toContain('@DigitalCashNetwork');
@@ -150,21 +148,21 @@ describe('VideoComponent', () => {
       let updateUrlSpy = spyOn(component, 'updateUrl')
 
       getVideoObservable = new Observable(subscriber => {
-          // give the subscriber the video it wants
-          subscriber.next(exampleVideo)
+        // give the subscriber the video it wants
+        subscriber.next(exampleVideo)
 
-          // now observe the results
+        // now observe the results
 
-          // confirm the state of the component
-          expect(component?.video?.title).toEqual("my title")
-          expect(component?.streamUrl).toEqual('path/to/video.mp4')
-          expect(component?.notFound).toBeFalse()
-          expect(component?.notVideo).toBeFalse()
+        // confirm the state of the component
+        expect(component?.video?.title).toEqual("my title")
+        expect(component?.streamUrl).toEqual('path/to/video.mp4')
+        expect(component?.notFound).toBeFalse()
+        expect(component?.notVideo).toBeFalse()
 
-          // confirm that we've redirected to the canonical url
-          expect(updateUrlSpy).toHaveBeenCalledWith("@DigitalCashNetwork:c/Dash-Podcast-179:4")
+        // confirm that we've redirected to the canonical url
+        expect(updateUrlSpy).toHaveBeenCalledWith("@DigitalCashNetwork:c/Dash-Podcast-179:4")
 
-          done()
+        done()
       })
       getStreamUrlObservable = of('path/to/video.mp4')
 
@@ -176,23 +174,23 @@ describe('VideoComponent', () => {
       let updateUrlSpy = spyOn(component, 'updateUrl')
 
       getVideoObservable = new Observable(subscriber => {
-          // give the subscriber a "not found" error
-          subscriber.error({
-            type: VideoServiceError.NotFound,
-          })
+        // give the subscriber a "not found" error
+        subscriber.error({
+          type: VideoServiceError.NotFound,
+        })
 
-          // now observe the results
+        // now observe the results
 
-          // confirm the state of the component
-          expect(component?.video).toBeUndefined;
-          expect(component?.streamUrl).toBeUndefined;
-          expect(component?.notFound).toBeTrue()
-          expect(component?.notVideo).toBeFalse()
+        // confirm the state of the component
+        expect(component?.video).toBeUndefined;
+        expect(component?.streamUrl).toBeUndefined;
+        expect(component?.notFound).toBeTrue()
+        expect(component?.notVideo).toBeFalse()
 
-          // confirm that we've redirected to the canonical url
-          expect(updateUrlSpy.calls.count()).toEqual(0)
+        // confirm that we've redirected to the canonical url
+        expect(updateUrlSpy.calls.count()).toEqual(0)
 
-          done()
+        done()
       })
       getStreamUrlObservable = of('path/to/video.mp4')
 
@@ -204,23 +202,23 @@ describe('VideoComponent', () => {
       let updateUrlSpy = spyOn(component, 'updateUrl')
 
       getVideoObservable = new Observable(subscriber => {
-          // give the subscriber a "not found" error
-          subscriber.error({
-            type: VideoServiceError.NotVideo,
-          })
+        // give the subscriber a "not found" error
+        subscriber.error({
+          type: VideoServiceError.NotVideo,
+        })
 
-          // now observe the results
+        // now observe the results
 
-          // confirm the state of the component
-          expect(component?.video).toBeUndefined;
-          expect(component?.streamUrl).toBeUndefined;
-          expect(component?.notFound).toBeFalse()
-          expect(component?.notVideo).toBeTrue()
+        // confirm the state of the component
+        expect(component?.video).toBeUndefined;
+        expect(component?.streamUrl).toBeUndefined;
+        expect(component?.notFound).toBeFalse()
+        expect(component?.notVideo).toBeTrue()
 
-          // confirm that we've redirected to the canonical url
-          expect(updateUrlSpy.calls.count()).toEqual(0)
+        // confirm that we've redirected to the canonical url
+        expect(updateUrlSpy.calls.count()).toEqual(0)
 
-          done()
+        done()
       })
       getStreamUrlObservable = of('path/to/video.mp4')
 

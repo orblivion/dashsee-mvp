@@ -1,0 +1,27 @@
+.btn-order-by.selected {
+  color: #E5E5E5;
+  background: #868686;
+}
+
+.btn-order-by {
+  float: left;
+  border: 2px solid #DDDDDD;
+  background: #FFF;
+  color: #868686;
+  padding: 1em;
+  border-radius: 10px;
+  font-family: 'Arimo',Arial,Helvetica Neue,Helvetica,sans-serif;
+}
+
+.clear-both {
+  margin: 0px;
+  padding: 0px;
+  clear: both;
+}
+
+.selectors {
+  margin: 0px;
+  padding: 0px;
+  position: sticky;
+  top: 95px;
+}

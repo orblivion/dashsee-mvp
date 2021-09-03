@@ -10,6 +10,12 @@ export enum VideoServiceError {
 }
 const API_NOT_FOUND = 'NOT_FOUND'
 
+export interface VideoPage{
+  videos: Video[];
+  page: number;
+  totalPages: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -56,13 +62,16 @@ export class VideoService {
     })
   }
 
+  // TODO stop making assumptions about what data we're getting in
   private buildVideo(apiVideo: any): Video {
     let channel : Channel | undefined;
-    if (apiVideo.signing_channel) {
+    // Don't acknowledge channels unless there's at least a handle
+    // (aka channel.name)
+    if (apiVideo.signing_channel?.name) {
       channel = {
-        handle: apiVideo.signing_channel?.name,
-        name: apiVideo.signing_channel?.value.title,
-        thumbnailUrl: apiVideo.signing_channel?.value.thumbnail?.url,
+        handle: apiVideo.signing_channel.name,
+        name: apiVideo.signing_channel.value?.title,
+        thumbnailUrl: apiVideo.signing_channel.value?.thumbnail?.url,
       }
     }
     return {
@@ -82,23 +91,47 @@ export class VideoService {
     }
   }
 
-  getRecentVideos(tags: string[]): Observable<Video[]> {
+  getVideos(orderBy: string, page: number, pageSize: number): Observable<VideoPage> {
     return new Observable(subscriber => {
       this.http
         .post<any>(this.APIUrl, {
           method: "claim_search",
-          params: { stream_types: ["video"], any_tags: tags },
+          params: {
+            not_tags: ["mature", "hentai", "porn", "nsfw"],
+            stream_types: ["video"],
+            page,
+            page_size: pageSize,
+            remove_duplicates: true,
+            order_by: [orderBy]
+          },
         })
-          .subscribe((data) => {
-            if (data?.result?.items) {
-              const vidList = data.result.items.map(this.buildVideo)
-              subscriber.next(vidList)
-            } else {
-              subscriber.next([])
-            }
-            subscriber.complete()
+          .subscribe({
+            next: (data) => {
+              const result = data?.result
+              if (result?.items && result?.page !== undefined && result?.total_pages !== undefined) {
+                subscriber.next({
+                  videos: data.result.items.map(this.buildVideo),
+                  page: result.page,
+                  totalPages: result.total_pages,
+                })
+              } else {
+                subscriber.error({
+                  msg: "getVideos: Missing expected data in response. " + JSON.stringify(result, null, 2),
+                  type: VideoServiceError.Unknown,
+                })
+              }
+              subscriber.complete()
+            },
+            error: (error) => {
+              console.error("getVideos: there was an error! ", error);
+              subscriber.error({
+                msg: "getVideos: there was an error! " + JSON.stringify(error, null, 2),
+                type: VideoServiceError.Unknown,
+              });
+              return
+            },
           })
-      })
+    })
   }
 
   getVideo(mediaUriEncoded: string): Observable<Video> {

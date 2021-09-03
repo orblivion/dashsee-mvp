@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { VideoService, VideoServiceError } from './video.service';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 describe('VideoService', () => {
   let videoService: VideoService;
@@ -74,7 +74,7 @@ describe('VideoService', () => {
           expect(encodeURI(httpClientSpy.post.calls.mostRecent().args[1].params.urls)).toEqual('%F0%9F%94%B4')
           done()
         },
-        next: x => done.fail
+        next: x => done.fail("Expected an error response"),
       });
     });
 
@@ -94,7 +94,7 @@ describe('VideoService', () => {
           expect(error.type).toEqual(VideoServiceError.NotFound)
           done()
         },
-        next: x => done.fail
+        next: x => done.fail("Expected an error response"),
       });
     });
 
@@ -114,7 +114,7 @@ describe('VideoService', () => {
           expect(error.type).toEqual(VideoServiceError.NotVideo)
           done()
         },
-        next: x => done.fail
+        next: x => done.fail("Expected an error response"),
       });
     });
 
@@ -134,7 +134,7 @@ describe('VideoService', () => {
           expect(error.type).toEqual(VideoServiceError.Unknown)
           done()
         },
-        next: x => done.fail
+        next: x => done.fail("Expected an error response"),
       });
     });
   });
@@ -167,6 +167,112 @@ describe('VideoService', () => {
           done()
         },
         error: error => done.fail(error)
+      });
+    });
+  });
+
+  describe('getVideos', () => {
+    it('returns an array of videos, and page and totalPages, if the response is valid', (done) => {
+      httpClientSpy.post.and.returnValue(of({
+        result: {
+          total_pages: 4,
+          page: 4,
+          page_size: 20,
+          items: [
+            {
+              canonical_url: "lbry://@DigitalCashNetwork#c/Dash-Podcast-179#4",
+              short_url: "lbry://Dash-Podcast-179#4",
+              signing_channel: {
+                name: '@DigitalCashNetwork',
+                value: {
+                  title: 'Digital Cash Network',
+                  thumbnail: {
+                    url: 'path/to/channel/thumbnail.png',
+                  },
+                },
+              },
+              value: {
+                title: 'my title',
+                description: 'my description',
+                stream_type: 'video',
+                thumbnail: {
+                  url: 'path/to/video/thumbnail.png',
+                },
+              },
+            }, {
+              canonical_url: "lbry://@fake-channel#a/fake-video#b",
+              short_url: "lbry://fake-video#b",
+              signing_channel: {
+                name: '@fake-channel',
+                value: {
+                  title: 'Fake Channel',
+                  thumbnail: {
+                    url: 'path/to/fake-channel/thumbnail.png',
+                  },
+                },
+              },
+              value: {
+                title: 'fake video',
+                description: 'my fake video description',
+                stream_type: 'video',
+                thumbnail: {
+                  url: 'path/to/fake-video/thumbnail.png',
+                },
+              },
+            }
+          ]
+        }
+      }));
+
+      videoService.getVideos('ordering', 4, 20).subscribe({
+        next: ({videos, page, totalPages}) => {
+          expect(page).toEqual(4)
+          expect(totalPages).toEqual(4)
+          expect(videos).toEqual([
+            {
+              title: "my title",
+              thumbnailUrl: "path/to/video/thumbnail.png",
+              description: "my description",
+              confirmedUri: "lbry://Dash-Podcast-179#4",
+              channel: {
+                handle: "@DigitalCashNetwork",
+                name: "Digital Cash Network",
+                thumbnailUrl: "path/to/channel/thumbnail.png",
+              },
+              canonicalUri: "@DigitalCashNetwork:c/Dash-Podcast-179:4",
+            }, {
+              title: "fake video",
+              thumbnailUrl: "path/to/fake-video/thumbnail.png",
+              description: "my fake video description",
+              confirmedUri: "lbry://fake-video#b",
+              channel: {
+                handle: "@fake-channel",
+                name: "Fake Channel",
+                thumbnailUrl: "path/to/fake-channel/thumbnail.png",
+              },
+              canonicalUri: "@fake-channel:a/fake-video:b",
+            },
+          ])
+
+          expect(httpClientSpy.post.calls.mostRecent().args.length).toEqual(2)
+          expect(httpClientSpy.post.calls.mostRecent().args[1].params.page).toEqual(4)
+          expect(httpClientSpy.post.calls.mostRecent().args[1].params.page_size).toEqual(20)
+          expect(httpClientSpy.post.calls.mostRecent().args[1].params.order_by).toEqual(['ordering'])
+          done()
+        },
+        error: error => done.fail(error)
+      });
+    });
+
+    it('returns an error if the API returns an error', (done) => {
+      httpClientSpy.post.and.returnValue(new Observable(subscriber => subscriber.error({})))
+
+      videoService.getVideos('ordering', 4, 20).subscribe({
+        error: error => {
+          expect(error.type).toEqual(VideoServiceError.Unknown)
+          done()
+        },
+        next: x => done.fail("Expected an error response"),
       });
     });
   });

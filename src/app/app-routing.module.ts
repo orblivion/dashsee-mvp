@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes, UrlSegment } from '@angular/router';
 import { checkMediaUri } from './lbry-media-uri';
 import { VideoComponent } from './video/video.component';
-import { VideoListComponent } from './video-list/video-list.component';
+import { HomePageComponent } from './home-page/home-page.component';
 
 function matchLBRYMediaUri(url : UrlSegment[]) {
   // We'll just assume that any string is fine, so long as it's at most
@@ -30,7 +30,7 @@ function matchLBRYChannelUri(url : UrlSegment[]) {
 }
 
 const routes: Routes = [
-  { path: '', component: VideoListComponent },
+  { path: '', component: HomePageComponent },
 
   // Catch anything with one segment that starts with @ as a channel.
   // Things with one segment that don't start with @ could be media uris.
