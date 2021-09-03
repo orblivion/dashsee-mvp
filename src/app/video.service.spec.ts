@@ -63,6 +63,21 @@ describe('VideoService', () => {
       });
     });
 
+    it('decodes the uri before passing it to the API', (done) => {
+      httpClientSpy.post.and.returnValue(of({}));
+
+      videoService.getVideo('%F0%9F%94%B4').subscribe({
+        // using the error case just because I didn't want to have a dummy API response
+        error: error => {
+          expect(httpClientSpy.post.calls.mostRecent().args.length).toEqual(2)
+          expect(httpClientSpy.post.calls.mostRecent().args[1].params.urls).not.toEqual('%F0%9F%94%B4')
+          expect(encodeURI(httpClientSpy.post.calls.mostRecent().args[1].params.urls)).toEqual('%F0%9F%94%B4')
+          done()
+        },
+        next: x => done.fail
+      });
+    });
+
     it('returns a "not found" if there is not the expected video in the response', (done) => {
       httpClientSpy.post.and.returnValue(of({
         result: {
