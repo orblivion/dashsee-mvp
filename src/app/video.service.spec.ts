@@ -138,4 +138,36 @@ describe('VideoService', () => {
       });
     });
   });
+
+  describe('getStreamUrl', () => {
+    it('returns a streamUrl if the response is valid', (done) => {
+      httpClientSpy.post.and.returnValue(of({
+        result: {
+          streaming_url: 'path/to/video.mp4',
+        }
+      }));
+
+      videoService.getStreamUrl({
+        title: "my title",
+        thumbnailUrl: "path/to/video/thumbnail.png",
+        description: "my description",
+        confirmedUri: "lbry://Dash-Podcast-179#4",
+        channel: {
+          handle: "@DigitalCashNetwork",
+          name: "Digital Cash Network",
+          thumbnailUrl: "path/to/channel/thumbnail.png",
+        },
+        canonicalUri: "@DigitalCashNetwork:c/Dash-Podcast-179:4",
+      }).subscribe({
+        next: streamUrl => {
+          expect(streamUrl).toEqual('path/to/video.mp4')
+
+          expect(httpClientSpy.post.calls.mostRecent().args.length).toEqual(2)
+          expect(httpClientSpy.post.calls.mostRecent().args[1].params.uri).toEqual('lbry://Dash-Podcast-179#4')
+          done()
+        },
+        error: error => done.fail(error)
+      });
+    });
+  });
 });
