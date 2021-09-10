@@ -136,3 +136,8 @@ main {
     margin-left: calc(50% - 0.5 * clamp(calc(100% - 45px * 2), 600px, 100%));
     margin-top: 22px;
 }
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}

@@ -6,26 +6,29 @@
       title="{{ video.title }}"
       class="video-list-item"
       *ngFor="let video of videos; let i = index"
-      routerLink="{{ video.canonicalUri }}"
     >
-      <div class='video-thumbnail-container'>
-        <img class='video-thumbnail' src={{video.thumbnailUrl}} alt="video thumbnail">
-      </div>
-
-      <h4 class='video-title'>
-        {{ (video.title.length > 50)? (video.title | slice:0:50)+'...':(video.title) }}
-      </h4>
-
-      <div *ngIf="video.channel" class='channel-info' routerLink="{{ video.channel.handle }}">
-        <img *ngIf="video.channel.thumbnailUrl; else NoAvatar" class='channel-thumbnail' src="{{ video.channel.thumbnailUrl }}" alt="channel thumbnail"/>
-        <ng-template #NoAvatar><div class='channel-thumbnail'></div></ng-template>
-
-        <!-- title="..." is for mouseover in case of text truncate of channel name/handle -->
-        <div class='channel-names' title="{{ video.channel.handle }} - {{ video.channel.name }}">
-          <div class='channel-name'>{{ video.channel.name }}</div>
-          <div class='channel-handle'>{{ video.channel.handle }}</div>
+      <a routerLink="/{{ video.canonicalUri }}">
+        <div class='video-thumbnail-container'>
+          <img class='video-thumbnail' src={{video.thumbnailUrl}} alt="video thumbnail">
         </div>
-      </div>
+
+        <h4 class='video-title'>
+          {{ (video.title.length > 55)? (video.title | slice:0:55)+'...':(video.title) }}
+        </h4>
+
+        <div *ngIf="video.channel" class='channel-info'>
+          <a routerLink="/{{ video.channel.canonicalUri }}">
+            <img *ngIf="video.channel.thumbnailUrl; else NoAvatar" class='channel-thumbnail' src="{{ video.channel.thumbnailUrl }}" alt="channel thumbnail"/>
+            <ng-template #NoAvatar><div class='channel-thumbnail'></div></ng-template>
+
+            <!-- title="..." is for mouseover in case of text truncate of channel name/handle -->
+            <div class='channel-names' title="{{ video.channel.handle }} - {{ video.channel.name }}">
+              <div class='channel-name'>{{ video.channel.name }}</div>
+              <div class='channel-handle'>{{ video.channel.handle }}</div>
+            </div>
+          </a>
+        </div>
+      </a>
     </div>
     <div *ngIf="loading" class='loading-message-container'>
       <span class="loading-message">loading...</span>

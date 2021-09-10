@@ -23,13 +23,15 @@
   <div class='video-details'>
     <div *ngIf="video">
       <h1 class='video-title'>{{video.title}}</h1>
-      <div *ngIf="video.channel" class='channel-info' routerLink="{{ video.channel.handle }}">
-        <img *ngIf="video.channel.thumbnailUrl; else NoAvatar" class='channel-thumbnail' src="{{ video.channel.thumbnailUrl }}" alt="channel thumbnail"/>
-        <ng-template #NoAvatar><div class='channel-thumbnail'></div></ng-template>
-        <div class='channel-names'>
-          <div class='channel-name'>{{ video.channel.name }}</div>
-          <div class='channel-handle'>{{ video.channel.handle }}</div>
-        </div>
+      <div *ngIf="video.channel" class='channel-info'>
+        <a routerLink="/{{ video.channel.canonicalUri }}">
+          <img *ngIf="video.channel.thumbnailUrl; else NoAvatar" class='channel-thumbnail' src="{{ video.channel.thumbnailUrl }}" alt="channel thumbnail"/>
+          <ng-template #NoAvatar><div class='channel-thumbnail'></div></ng-template>
+          <div class='channel-names'>
+            <div class='channel-name'>{{ video.channel.name }}</div>
+            <div class='channel-handle'>{{ video.channel.handle }}</div>
+          </div>
+        </a>
       </div>
       <p class='video-description'>{{video.description}}</p>
     </div>

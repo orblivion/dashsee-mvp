@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Video } from '../video';
-import { VideoService } from '../video.service';
+import { Video } from '../models';
+import { LbryService } from '../lbry.service';
 
 const pageSize = 20; // As of this writing, the default from LBRY's API is 20.
 
@@ -17,8 +17,10 @@ export class VideoListComponent implements OnInit {
   loading : Boolean = false;
 
   @Input() orderBy?: string;
+  @Input() channelUri?: string;
+  @Input() searchString?: string;
 
-  constructor(private videoService : VideoService) { }
+  constructor(private lbryService : LbryService) { }
 
   getAndShowNextVideos() {
     // This should always be set by the parent component
@@ -30,7 +32,7 @@ export class VideoListComponent implements OnInit {
 
     // Just in case of concurrency issues with clicks etc, put a limit on it
     if (this.totalPages === undefined || this.currentPage < this.totalPages) {
-      this.videoService.getVideos(this.orderBy, this.currentPage + 1, pageSize)
+      this.lbryService.getVideos(this.orderBy, this.searchString, this.channelUri, this.currentPage + 1, pageSize)
         .subscribe({
           next: ({videos, page, totalPages}) => {
             this.videos = this.videos.concat(videos);
@@ -47,6 +49,15 @@ export class VideoListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(): void {
+    this.totalPages = undefined;
+    this.currentPage = 0;
+    this.videos = [];
+    this.requestError = false;
+    this.loading = false;
+
     this.getAndShowNextVideos()
   }
 

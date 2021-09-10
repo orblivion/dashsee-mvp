@@ -69,3 +69,8 @@
   margin-left: 29px;
   margin-right: 112px;
 }
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}

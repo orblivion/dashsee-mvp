@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, UrlSegment } from '@angular/router';
-import { checkMediaUri } from './lbry-media-uri';
+import { checkMediaUri, checkChannelUri } from './lbry-uris';
 import { VideoComponent } from './video/video.component';
+import { ChannelComponent } from './channel/channel.component';
 import { HomePageComponent } from './home-page/home-page.component';
 
 function matchLBRYMediaUri(url : UrlSegment[]) {
@@ -23,10 +24,17 @@ function matchLBRYMediaUri(url : UrlSegment[]) {
 }
 
 function matchLBRYChannelUri(url : UrlSegment[]) {
-  if(url.length === 1 && url[0].path[0] === '@') {
-    return {consumed: url};
+  let channelUriEncoded = url.join('/')
+
+  if (!checkChannelUri(channelUriEncoded)) {
+    return null;
   }
-  return null;
+  return {
+    consumed: url,
+    posParams: {
+      channelUriEncoded: new UrlSegment(channelUriEncoded, {}),
+    }
+  };
 }
 
 const routes: Routes = [
@@ -36,7 +44,7 @@ const routes: Routes = [
   // Things with one segment that don't start with @ could be media uris.
   //
   // For now, redirect back to root. Eventually we get a @channel component.
-  { matcher: matchLBRYChannelUri, redirectTo: '' },
+  { matcher: matchLBRYChannelUri, component: ChannelComponent },
   { matcher: matchLBRYMediaUri, component: VideoComponent },
   { path: "**", redirectTo: '' }, // TODO maybe a proper 404
 ];

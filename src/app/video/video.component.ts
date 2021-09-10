@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router'
-import { Video } from '../video';
-import { VideoService, VideoServiceError } from '../video.service';
-import { checkMediaUri } from '../lbry-media-uri';
+import { Video } from '../models';
+import { LbryService, LbryServiceError } from '../lbry.service';
+import { checkMediaUri } from '../lbry-uris';
 
 @Component({
   selector: 'app-video',
@@ -17,14 +17,14 @@ export class VideoComponent implements OnInit {
   notFound : boolean = false; // tried and failed to find a media item
   notVideo : boolean = false; // something other than a video found
 
-  constructor(private videoService : VideoService, private route : ActivatedRoute, private router : Router) { }
+  constructor(private lbryService : LbryService, private route : ActivatedRoute, private router : Router) { }
 
   getAndShowVideo(mediaUriEncoded: string) {
-    this.videoService.getVideo(mediaUriEncoded)
+    this.lbryService.getVideo(mediaUriEncoded)
       .subscribe({
         next: (video) => {
           this.video = video
-          this.videoService.getStreamUrl(video)
+          this.lbryService.getStreamUrl(video)
             .subscribe((streamUrl) => {
               this.streamUrl = streamUrl;
               this.updateUrl(video.canonicalUri)
@@ -32,9 +32,9 @@ export class VideoComponent implements OnInit {
             });
         },
         error: (error) => {
-          if (error.type === VideoServiceError.NotFound) {
+          if (error.type === LbryServiceError.NotFound) {
             this.notFound = true
-          } else if (error.type === VideoServiceError.NotVideo) {
+          } else if (error.type === LbryServiceError.NotVideo) {
             this.notVideo = true
           } else {
             console.error("getAndShowVideo: there was an error!", error);

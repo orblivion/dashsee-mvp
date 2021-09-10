@@ -3,8 +3,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { VideoComponent } from './video.component';
-import { VideoService, VideoServiceError } from '../video.service';
-import { Video } from '../video';
+import { LbryService, LbryServiceError } from '../lbry.service';
+import { Video } from '../models';
 
 import { Observable, of } from 'rxjs';
 
@@ -16,14 +16,16 @@ const exampleVideo = {
   channel: {
     handle: "@DigitalCashNetwork",
     name: "Digital Cash Network",
+    description: "channel description",
     thumbnailUrl: "path/to/channel/thumbnail.png",
+    canonicalUri: "@DigitalCashNetwork:c",
   },
   canonicalUri: "@DigitalCashNetwork:c/Dash-Podcast-179:4",
 }
 
 describe('VideoComponent', () => {
   let component: VideoComponent;
-  let videoService: VideoService;
+  let lbryService: LbryService;
   let fixture: ComponentFixture<VideoComponent>;
 
   describe('display', () => {
@@ -121,7 +123,7 @@ describe('VideoComponent', () => {
     let getVideoObservable: Observable<Video>
     let getStreamUrlObservable: Observable<any>
     beforeEach(async () => {
-      class MockVideoService {
+      class MockLbryService {
         getStreamUrl(video: Video): Observable<any> {
           return getStreamUrlObservable
         }
@@ -133,7 +135,7 @@ describe('VideoComponent', () => {
       TestBed.configureTestingModule({
         providers: [
           VideoComponent,
-          { provide: VideoService, useClass: MockVideoService }
+          { provide: LbryService, useClass: MockLbryService }
         ],
         imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([
           {path: "@DigitalCashNetwork:c/Dash-Podcast-179:4", component: VideoComponent}
@@ -141,7 +143,7 @@ describe('VideoComponent', () => {
       })
 
       component = TestBed.inject(VideoComponent);
-      videoService = TestBed.inject(VideoService);
+      lbryService = TestBed.inject(LbryService);
     });
 
     it('should get video successfully', (done) => {
@@ -176,7 +178,7 @@ describe('VideoComponent', () => {
       getVideoObservable = new Observable(subscriber => {
         // give the subscriber a "not found" error
         subscriber.error({
-          type: VideoServiceError.NotFound,
+          type: LbryServiceError.NotFound,
         })
 
         // now observe the results
@@ -204,7 +206,7 @@ describe('VideoComponent', () => {
       getVideoObservable = new Observable(subscriber => {
         // give the subscriber a "not found" error
         subscriber.error({
-          type: VideoServiceError.NotVideo,
+          type: LbryServiceError.NotVideo,
         })
 
         // now observe the results

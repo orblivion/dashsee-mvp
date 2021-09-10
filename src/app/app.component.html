@@ -2,8 +2,10 @@
   <!-- TODO separate header component -->
   <div class="header-main">
     <span class='header-left'>
-      <div class='header-logo' routerLink=''>
-        <img src="/assets/dashsee-logo-no-name.png"> <div>DASHsee</div>
+      <div class='header-logo'>
+        <a routerLink=''>
+          <img src="/assets/dashsee-logo-no-name.png"> <div>DASHsee</div>
+        </a>
       </div>
     </span>
     <span class='header-middle'>
@@ -12,7 +14,13 @@
           <img src="/assets/magnifying-glass.svg">
         </div>
         <div class='search-bar-input-wrapper'>
-          <input type="text" id="site-search" name="site-search" autocomplete="off">
+          <input
+            type="text"
+            id="site-search"
+            name="site-search"
+            autocomplete="off"
+            placeholder="Search site videos"
+          >
         </div>
       </div>
     </span>

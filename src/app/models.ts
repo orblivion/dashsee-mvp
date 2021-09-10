@@ -1,8 +1,11 @@
 export interface Channel {
   handle: string;
   name: string;
+  description: string | undefined;
   thumbnailUrl: string | undefined;
+  canonicalUri: string;
 }
+
 export interface Video {
   channel: Channel | undefined;
 
@@ -12,4 +15,10 @@ export interface Video {
 
   confirmedUri: string;
   canonicalUri: string;
+}
+
+export interface VideoPage{
+  videos: Video[];
+  page: number;
+  totalPages: number;
 }

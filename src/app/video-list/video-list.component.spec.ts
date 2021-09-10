@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { VideoListComponent } from './video-list.component';
-import { VideoService, VideoServiceError, VideoPage } from '../video.service';
-import { Video } from '../video';
+import { LbryService, LbryServiceError } from '../lbry.service';
+import { VideoPage } from '../models';
 
 import { Observable } from 'rxjs';
 
@@ -16,7 +16,9 @@ const exampleVideos = [
     channel: {
       handle: "@DigitalCashNetwork",
       name: "Digital Cash Network",
+      description: "channel description",
       thumbnailUrl: "path/to/channel/thumbnail.png",
+      canonicalUri: "@DigitalCashNetwork:c",
     },
     canonicalUri: "@DigitalCashNetwork:c/Dash-Podcast-179:4",
   }, {
@@ -27,7 +29,9 @@ const exampleVideos = [
     channel: {
       handle: "@fake-channel",
       name: "Fake Channel",
+      description: "fake description",
       thumbnailUrl: "path/to/fake-channel/thumbnail.png",
+      canonicalUri: "@fake-channel:a",
     },
     canonicalUri: "@fake-channel:a/fake-video:b",
   },
@@ -35,7 +39,7 @@ const exampleVideos = [
 
 describe('VideoListComponent', () => {
   let component: VideoListComponent;
-  let videoService: VideoService;
+  let lbryService: LbryService;
   let fixture: ComponentFixture<VideoListComponent>;
 
   describe('display', () => {
@@ -134,12 +138,16 @@ describe('VideoListComponent', () => {
     let getVideosResponse: Observable<VideoPage>;
     let getVideosCalledWithPage: number;
     let getVideosCalledWithOrderBy: string;
+    let getVideosCalledWithChannel: string;
+    let getVideosCalledWithSearchText: string;
 
     beforeEach(async () => {
-      class MockVideoService {
-        getVideos(orderBy : string, page : number, pageSize : number): Observable<VideoPage> {
-          getVideosCalledWithPage = page
+      class MockLbryService {
+        getVideos(orderBy : string, searchText: string, channel : string, page : number, pageSize : number): Observable<VideoPage> {
           getVideosCalledWithOrderBy = orderBy
+          getVideosCalledWithSearchText = searchText
+          getVideosCalledWithChannel = channel
+          getVideosCalledWithPage = page
           return getVideosResponse;
         }
       }
@@ -147,13 +155,13 @@ describe('VideoListComponent', () => {
       TestBed.configureTestingModule({
         providers: [
           VideoListComponent,
-          { provide: VideoService, useClass: MockVideoService }
+          { provide: LbryService, useClass: MockLbryService }
         ],
         imports: [HttpClientTestingModule],
       })
 
       component = TestBed.inject(VideoListComponent);
-      videoService = TestBed.inject(VideoService);
+      lbryService = TestBed.inject(LbryService);
     });
 
     it('should get videos and page details successfully', (done) => {
@@ -182,6 +190,8 @@ describe('VideoListComponent', () => {
 
         expect(getVideosCalledWithPage).toEqual(4)
         expect(getVideosCalledWithOrderBy).toEqual('ordering')
+        expect(getVideosCalledWithChannel).toEqual('channel')
+        expect(getVideosCalledWithSearchText).toEqual('search text')
 
         done()
       })
@@ -189,6 +199,8 @@ describe('VideoListComponent', () => {
       component.totalPages = undefined;
       component.currentPage = 3;
       component.orderBy = 'ordering';
+      component.searchString = 'search text';
+      component.channelUri = 'channel';
       component.videos = [{
         title: "existing video",
         thumbnailUrl: "path/to/existing-video/thumbnail.png",
@@ -197,7 +209,9 @@ describe('VideoListComponent', () => {
         channel: {
           handle: "@fake-channel",
           name: "Fake Channel",
+          description: "fake description",
           thumbnailUrl: "path/to/existing-channel/thumbnail.png",
+          canonicalUri: "@fake-channel:a",
         },
         canonicalUri: "@fake-channel:a/existing-video:b",
       }];
@@ -208,7 +222,7 @@ describe('VideoListComponent', () => {
       getVideosResponse = new Observable(subscriber => {
         // give the subscriber an error
         subscriber.error({
-          type: VideoServiceError.Unknown,
+          type: LbryServiceError.Unknown,
         })
 
         // now observe the results
@@ -221,6 +235,8 @@ describe('VideoListComponent', () => {
       })
 
       component.orderBy = 'ordering';
+      component.searchString = 'search text';
+      component.channelUri = 'channel';
       component.getAndShowNextVideos()
     });
   });

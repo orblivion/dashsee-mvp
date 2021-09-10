@@ -1,25 +1,57 @@
 import { Injectable } from '@angular/core';
-import { Video, Channel } from './video'; // TODO different file name?
+import { Video, VideoPage, Channel } from './models';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 
-export enum VideoServiceError {
+export enum LbryServiceError {
   NotFound,
   NotVideo,
   Unknown,
 }
 const API_NOT_FOUND = 'NOT_FOUND'
 
-export interface VideoPage{
-  videos: Video[];
-  page: number;
-  totalPages: number;
+// TODO stop making assumptions about what data we're getting in
+function buildChannel(apiChannel: any): Channel {
+  return {
+    handle: apiChannel.name,
+    name: apiChannel.value?.title,
+    description: apiChannel.value?.description,
+    thumbnailUrl: apiChannel.value?.thumbnail?.url,
+    canonicalUri: apiChannel.canonical_url.substring(
+      apiChannel.canonical_url.indexOf("lbry://") + 'lbry://'.length
+    ).replace('#', ':').replace('#', ':'),
+  }
+}
+
+// TODO stop making assumptions about what data we're getting in
+function buildVideo(apiVideo: any): Video {
+  let channel : Channel | undefined;
+  // Don't acknowledge channels unless there's at least a handle
+  // (aka channel.name)
+  if (apiVideo.signing_channel?.name) {
+    channel = buildChannel(apiVideo.signing_channel)
+  }
+  return {
+    channel,
+
+    title: apiVideo.value.title,
+    description: apiVideo?.value?.description,
+    thumbnailUrl: apiVideo.value.thumbnail.url,
+
+    canonicalUri: apiVideo.canonical_url.substring(
+      apiVideo.canonical_url.indexOf("lbry://") + 'lbry://'.length
+    ).replace('#', ':').replace('#', ':'),
+
+    confirmedUri: apiVideo.short_url.substring(
+      apiVideo.short_url.indexOf("lbry://")
+    ),
+  }
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class VideoService {
+export class LbryService {
   APIUrl: string = "https://api.lbry.tv/api/v1/proxy";
 
   constructor(private http: HttpClient) { }
@@ -45,7 +77,7 @@ export class VideoService {
                 console.error("missing streaming_url for " + video.confirmedUri)
                 subscriber.error({
                   msg: "missing streaming_url for " + video.confirmedUri,
-                  type: VideoServiceError.Unknown,
+                  type: LbryServiceError.Unknown,
                 })
               }
             },
@@ -54,7 +86,7 @@ export class VideoService {
               console.error("getStreamUrl: there was an error! " + video.confirmedUri, error);
               subscriber.error({
                 msg: "getStreamUrl: there was an error! " + JSON.stringify(error, null, 2),
-                type: VideoServiceError.Unknown,
+                type: LbryServiceError.Unknown,
               });
               return
             },
@@ -62,36 +94,7 @@ export class VideoService {
     })
   }
 
-  // TODO stop making assumptions about what data we're getting in
-  private buildVideo(apiVideo: any): Video {
-    let channel : Channel | undefined;
-    // Don't acknowledge channels unless there's at least a handle
-    // (aka channel.name)
-    if (apiVideo.signing_channel?.name) {
-      channel = {
-        handle: apiVideo.signing_channel.name,
-        name: apiVideo.signing_channel.value?.title,
-        thumbnailUrl: apiVideo.signing_channel.value?.thumbnail?.url,
-      }
-    }
-    return {
-      channel,
-
-      title: apiVideo.value.title,
-      description: apiVideo?.value?.description,
-      thumbnailUrl: apiVideo.value.thumbnail.url,
-
-      canonicalUri: apiVideo.canonical_url.substring(
-        apiVideo.canonical_url.indexOf("lbry://") + 'lbry://'.length
-      ).replace('#', ':').replace('#', ':'),
-
-      confirmedUri: apiVideo.short_url.substring(
-        apiVideo.short_url.indexOf("lbry://")
-      ),
-    }
-  }
-
-  getVideos(orderBy: string, page: number, pageSize: number): Observable<VideoPage> {
+  getVideos(orderBy: string, searchString: string | undefined, channelUri: string | undefined, page: number, pageSize: number): Observable<VideoPage> {
     return new Observable(subscriber => {
       this.http
         .post<any>(this.APIUrl, {
@@ -100,8 +103,10 @@ export class VideoService {
             not_tags: ["mature", "hentai", "porn", "nsfw"],
             stream_types: ["video"],
             page,
+            channel: channelUri,
             page_size: pageSize,
             remove_duplicates: true,
+            text: searchString,
             order_by: [orderBy]
           },
         })
@@ -110,14 +115,14 @@ export class VideoService {
               const result = data?.result
               if (result?.items && result?.page !== undefined && result?.total_pages !== undefined) {
                 subscriber.next({
-                  videos: data.result.items.map(this.buildVideo),
+                  videos: data.result.items.map(buildVideo),
                   page: result.page,
                   totalPages: result.total_pages,
                 })
               } else {
                 subscriber.error({
                   msg: "getVideos: Missing expected data in response. " + JSON.stringify(result, null, 2),
-                  type: VideoServiceError.Unknown,
+                  type: LbryServiceError.Unknown,
                 })
               }
               subscriber.complete()
@@ -126,7 +131,7 @@ export class VideoService {
               console.error("getVideos: there was an error! ", error);
               subscriber.error({
                 msg: "getVideos: there was an error! " + JSON.stringify(error, null, 2),
-                type: VideoServiceError.Unknown,
+                type: LbryServiceError.Unknown,
               });
               return
             },
@@ -150,7 +155,7 @@ export class VideoService {
             if (data?.error !== undefined) {
               console.error("error for " + mediaUriDecoded, data['error'])
               subscriber.error({
-                type: VideoServiceError.Unknown,
+                type: LbryServiceError.Unknown,
                 msg: "data.error: " + JSON.stringify(data?.error, null, 2),
               })
               return
@@ -159,7 +164,7 @@ export class VideoService {
               console.info("data.result['mediaUriDecoded'] not found: " + mediaUriDecoded)
               subscriber.error({
                 msg: "data.result['mediaUriDecoded'] not found",
-                type: VideoServiceError.Unknown,
+                type: LbryServiceError.Unknown,
               })
               return
             }
@@ -171,13 +176,13 @@ export class VideoService {
                 console.info(result.error.text);
                 subscriber.error({
                   msg: result.error,
-                  type: VideoServiceError.NotFound,
+                  type: LbryServiceError.NotFound,
                 })
               } else {
                 console.error("Error when resolving URI! " + mediaUriDecoded, result.error.text);
                 subscriber.error({
                   msg: "result.error: " + JSON.stringify(result.error, null, 2),
-                  type: VideoServiceError.Unknown,
+                  type: LbryServiceError.Unknown,
                 })
               }
               return
@@ -189,12 +194,12 @@ export class VideoService {
               );
               subscriber.error({
                 msg: "URI don't resolve to a video!" + result?.value?.stream_type,
-                type: VideoServiceError.NotVideo,
+                type: LbryServiceError.NotVideo,
               })
               return
             }
 
-            const video = this.buildVideo(result)
+            const video = buildVideo(result)
 
             subscriber.next(video)
             subscriber.complete()
@@ -203,7 +208,7 @@ export class VideoService {
             console.error("getVideo: there was an error! " + mediaUriDecoded, error);
             subscriber.error({
               msg: "getVideo: there was an error! " + JSON.stringify(error, null, 2),
-              type: VideoServiceError.Unknown,
+              type: LbryServiceError.Unknown,
             });
             return
           },
@@ -211,4 +216,69 @@ export class VideoService {
     });
   }
 
+  getChannel(channelUriEncoded: string): Observable<Channel> {
+    // We get the channelUri from the brower's URL. It's URLencoded. Turns out
+    // the API wants unicode as-is, so we decode it before using it.
+    let channelUriDecoded = decodeURI(channelUriEncoded)
+    return new Observable(subscriber => {
+      this.http
+        .post<any>(this.APIUrl, {
+          method: "resolve",
+          params: { urls: channelUriDecoded },
+        })
+        .subscribe({
+          next: (data) =>
+          {
+            if (data?.error !== undefined) {
+              console.error("error for " + channelUriDecoded, data['error'])
+              subscriber.error({
+                type: LbryServiceError.Unknown,
+                msg: "data.error: " + JSON.stringify(data?.error, null, 2),
+              })
+              return
+            }
+            if (data?.result?.[channelUriDecoded] === undefined) {
+              console.info("data.result['channelUriDecoded'] not found: " + channelUriDecoded)
+              subscriber.error({
+                msg: "data.result['channelUriDecoded'] not found",
+                type: LbryServiceError.Unknown,
+              })
+              return
+            }
+
+            const result = data.result[channelUriDecoded];
+
+            if ("error" in result) {
+              if (result.error.name === API_NOT_FOUND) {
+                console.info(result.error.text);
+                subscriber.error({
+                  msg: result.error,
+                  type: LbryServiceError.NotFound,
+                })
+              } else {
+                console.error("Error when resolving URI! " + channelUriDecoded, result.error.text);
+                subscriber.error({
+                  msg: "result.error: " + JSON.stringify(result.error, null, 2),
+                  type: LbryServiceError.Unknown,
+                })
+              }
+              return
+            }
+
+            const channel = buildChannel(result)
+
+            subscriber.next(channel)
+            subscriber.complete()
+          },
+          error: (error) => {
+            console.error("getChannel: there was an error! " + channelUriDecoded, error);
+            subscriber.error({
+              msg: "getChannel: there was an error! " + JSON.stringify(error, null, 2),
+              type: LbryServiceError.Unknown,
+            });
+            return
+          },
+        })
+    });
+  }
 }

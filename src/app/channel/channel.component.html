@@ -1,0 +1,96 @@
+<div *ngIf="channel; else IfNotFound" class='channel-header'>
+  <div class='channel-row-1'>
+    <div class='channel-col-1'>
+      <img *ngIf="channel.thumbnailUrl; else NoAvatar" class='channel-thumbnail' src="{{ channel.thumbnailUrl }}" alt="channel thumbnail"/>
+      <ng-template #NoAvatar><div class='channel-thumbnail'></div></ng-template>
+    </div>
+
+    <div class='channel-col-2'>
+      <div class='channel-names'>
+        <div class='channel-name-spacer'> </div>
+        <div class='channel-name'>{{ channel.name }}</div>
+        <div class='channel-handle'>{{ channel.handle }}</div>
+      </div>
+
+      <div class="selectors">
+        <span [class.selected]="tab===tabVideos" class="btn-channel-tab" id="btn-channel-videos" (click)="tab=tabVideos">Published Videos</span>
+        <span [class.selected]="tab===tabDescription" class="btn-channel-tab" id="btn-channel-description" (click)="tab=tabDescription">Profile</span>
+      </div>
+    </div>
+
+    <div class='channel-col-3'>
+      <div class='search-bar'>
+        <div>
+          <img
+            src="/assets/magnifying-glass.svg"
+            (click)="doSearch()"
+          >
+        </div>
+        <div class='search-bar-input-wrapper'>
+          <input
+            #channelSearchInput
+            id='channel-search-input'
+            type="text"
+            name="channel-search"
+            autocomplete="off"
+            placeholder="Search channel videos"
+            (keyup.enter)="doSearch()"
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='channel-row-2'>
+    <div class="selectors">
+      <span [class.selected]="tab===tabVideos" class="btn-channel-tab" id="btn-channel-videos" (click)="tab=tabVideos">Published Videos</span>
+      <span [class.selected]="tab===tabDescription" class="btn-channel-tab" id="btn-channel-description" (click)="tab=tabDescription">Profile</span>
+    </div>
+
+    <div class='search-bar'>
+      <div>
+        <img
+          src="/assets/magnifying-glass.svg"
+          (click)="doSearchSmall()"
+        >
+      </div>
+      <div class='search-bar-input-wrapper'>
+        <input
+          #channelSearchInputSmall
+          id='channel-search-input-small'
+          type="text"
+          name="channel-search"
+          autocomplete="off"
+          placeholder="Search channel videos"
+          (keyup.enter)="doSearchSmall()"
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #IfNotFound>
+  <div class='channel-header'>
+    <ng-container *ngIf="notFound; else Loading">
+      <p class="error-message">Sorry, this channel was not found.</p>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #Loading>
+  <div class='channel-header'>
+    <p class="loading-message">loading...</p>
+  </div>
+</ng-template>
+
+<div class='channel-separator'></div>
+
+<div class='channel-content'>
+  <ng-container *ngIf="channel">
+    <div *ngIf="tab===tabVideos">
+      <app-video-list [channelUri]="channel.canonicalUri" [orderBy]="byTimestamp" [searchString]="searchString"></app-video-list>
+    </div>
+    <div *ngIf="tab===tabDescription" class='channel-description'>
+      {{ channel.description }}
+    </div>
+  </ng-container>
+</div>
