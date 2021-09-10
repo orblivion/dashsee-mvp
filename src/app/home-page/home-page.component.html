@@ -1,10 +1,10 @@
 <div class="selectors">
-  <span [class.selected]="isTrendingMixed()" class="btn-order-by" id="btn-home-page-trending-mixed" (click)="setTrendingMixed()">Trending</span>
-  <span [class.selected]="isReleaseTime()" class="btn-order-by" id="btn-home-page-release-time" (click)="setReleaseTime()">Recent</span>
+  <span [class.selected]="isByTrendingMixed()" class="btn-order-by" id="btn-home-page-by-trending-mixed" (click)="setByTrendingMixed()">Trending</span>
+  <span [class.selected]="isByTimestamp()" class="btn-order-by" id="btn-home-page-by-timestamp" (click)="setByTimestamp()">Recent</span>
 </div>
-<span *ngIf="isTrendingMixed()">
-  <app-video-list [orderBy]="trendingMixed"></app-video-list>
+<span *ngIf="isByTrendingMixed()">
+  <app-video-list [orderBy]="byTrendingMixed"></app-video-list>
 </span>
-<span *ngIf="isReleaseTime()">
-  <app-video-list [orderBy]="releaseTime"></app-video-list>
+<span *ngIf="isByTimestamp()">
+  <app-video-list [orderBy]="byTimestamp"></app-video-list>
 </span>

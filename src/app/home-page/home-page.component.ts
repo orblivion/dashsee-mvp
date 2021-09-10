@@ -6,30 +6,30 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home-page.component.css']
 })
 export class HomePageComponent implements OnInit {
-  trendingMixed: string = "trending_mixed"
-  releaseTime: string = "release_time"
+  byTrendingMixed: string = "trending_mixed"
+  byTimestamp: string = "timestamp"
   orderBy: string = "";
 
-  setTrendingMixed() {
-    this.orderBy = this.trendingMixed
+  setByTrendingMixed() {
+    this.orderBy = this.byTrendingMixed
   }
 
-  isTrendingMixed() {
-    return this.orderBy == this.trendingMixed
+  isByTrendingMixed() {
+    return this.orderBy == this.byTrendingMixed
   }
 
-  setReleaseTime() {
-    this.orderBy = this.releaseTime
+  setByTimestamp() {
+    this.orderBy = this.byTimestamp
   }
 
-  isReleaseTime() {
-    return this.orderBy == this.releaseTime
+  isByTimestamp() {
+    return this.orderBy == this.byTimestamp
   }
 
   constructor() { }
 
   ngOnInit(): void {
-    this.orderBy = this.trendingMixed;
+    this.orderBy = this.byTrendingMixed;
   }
 
 }
