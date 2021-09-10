@@ -4,7 +4,6 @@
 }
 
 .btn-order-by {
-  float: left;
   border: 2px solid #DDDDDD;
   background: #FFF;
   color: #868686;
@@ -20,8 +19,6 @@
 }
 
 .selectors {
-  margin: 0px;
-  padding: 0px;
-  position: sticky;
-  top: 95px;
+  text-align: center;
+  margin: 2.5em;
 }
