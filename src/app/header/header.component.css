@@ -1,0 +1,127 @@
+.header {
+    /* Stick to the top */
+    position: sticky;
+    top: 0;
+    font-family: 'Arimo',Arial,Helvetica Neue,Helvetica,sans-serif;
+}
+
+.header {
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+
+    border-bottom: 4px solid #E5E5E5;
+}
+
+.header-main {
+    /* Take the remaining height */
+    flex-grow: 1;
+
+    /* Layout the left side, input, and right side */
+    display: flex;
+    flex-direction: row;
+
+    padding:0px;
+    margin:0px;
+}
+
+.header-left {
+    width: 25%;
+    background-color: #FFF;
+    color: #AAE;
+}
+
+@media only screen and (max-width: 799px) {
+  .header-logo div {
+      display: none;
+  }
+  #header-btn-sign-up {
+    padding: 5px;
+  }
+  #header-btn-log-in {
+    padding: 5px;
+  }
+}
+
+.header-logo div {
+    float: left;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 10px;
+    font-size: 2.5em;
+    font-family: 'Nerko One',Arial,Helvetica Neue,Helvetica,sans-serif;
+}
+
+.header-logo img {
+    float: left;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #DDDDDD;
+    background: #CCF;
+}
+
+.header-logo {
+    width: 200px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.header-middle {
+    /* Take the remaining width */
+    flex-grow: 1;
+    background-color: #FFF;
+}
+
+.header-right {
+    width: 25%;
+    background-color: #FFF;
+}
+
+.header-right span {
+    padding: 1em;
+    float: right;
+    border-radius: 10px;
+}
+
+#header-btn-sign-up {
+    border: 2px solid #DDDDDD;
+    background: #868686;
+    color: #E5E5E5;
+}
+
+#header-btn-log-in {
+    color: #868686;
+    border: 2px solid #FFFFFF;
+}
+
+.search-bar {
+    height: 2.5em;
+    margin: 5px 10px 0px 10px;
+    padding: 0px;
+    border: 1px solid #DDDDDD;
+    border-radius: 10px;
+}
+
+.search-bar div {
+    padding: 0px;
+    margin: 5px 10px 0px 0px;
+    display: inline;
+    float: left;
+}
+
+.search-bar-input-wrapper {
+    width: calc(100% - 80px);
+    padding: 0px;
+    margin: 0px;
+}
+
+.search-bar input {
+    width: 100%;
+    margin: 0px;
+    border: none;
+}
+
+.search-bar img {
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+}
