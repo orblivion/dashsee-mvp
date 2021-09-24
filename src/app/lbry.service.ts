@@ -1,4 +1,5 @@
 // TODO - this should be lbry-unauthed.service. there will be a lbry-authed.service
+// TODO Note about the API endpoint. Assuming it's protected with the blacklist, add a stern warning that we are depending on the endpoint to do it. So any future endpoint should also make use of it. And also make sure that that blacklist is one that gets updated from LBRY, since obviously videos get blacklisted over time.
 
 import { Injectable } from '@angular/core';
 import { Video, VideoPage, Channel } from './models';
