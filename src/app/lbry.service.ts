@@ -1,3 +1,5 @@
+// TODO - this should be lbry-unauthed.service. there will be a lbry-authed.service
+
 import { Injectable } from '@angular/core';
 import { Video, VideoPage, Channel } from './models';
 import { Observable, of } from 'rxjs';
