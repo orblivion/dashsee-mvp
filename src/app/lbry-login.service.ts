@@ -22,7 +22,11 @@ export class LoginService {
 
   login(username: string, password: string) {
     localStorage.setItem('logged-in-mock', 'true');
-    return of();
+    // TODO Make sure to do .shareReplay(); https://blog.angular-university.io/angular-jwt-authentication/
+  }
+
+  logout() {
+    localStorage.setItem('logged-in-mock', 'false');
     // TODO Make sure to do .shareReplay(); https://blog.angular-university.io/angular-jwt-authentication/
   }
 

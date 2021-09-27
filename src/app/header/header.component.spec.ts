@@ -73,11 +73,15 @@ describe('HeaderComponent', () => {
     let getMyChannelObservable: Observable<Channel>
     let loginService: LoginService;
     let authenticatedService: AuthenticatedService;
+    let logoutTestFunc: Function
 
     beforeEach(async () => {
       class MockLoginService {
         isLoggedIn(): boolean {
           return isLoggedInVal
+        }
+        logout(): void {
+          logoutTestFunc()
         }
       }
       class MockAuthenticatedService {
@@ -134,6 +138,12 @@ describe('HeaderComponent', () => {
       })
 
       component.setLoginState();
+    });
+
+    it('clicking log in button calls login on the service', (done) => {
+      logoutTestFunc = done
+
+      component.logout()
     });
   });
 });
