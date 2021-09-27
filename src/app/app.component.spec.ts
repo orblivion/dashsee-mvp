@@ -22,10 +22,4 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('dashsee');
   });
 
-  it(`should render 'DASHsee' in the header`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.header-logo div')?.textContent).toContain('DASHsee');
-  });
 });
