@@ -24,14 +24,16 @@ export class AuthenticatedService {
     return of(mockChannel);
   }
 
-  login(username: string, password: string) {
+  login(username: string, password: string) : Observable<any> {
     // TODO - assuming for now that we're not putting the token in cookies. The interface shouldn't change much if we do.
     localStorage.setItem('logged-in-mock', 'true');
+    return of(undefined)
     // TODO Make sure to do .shareReplay(); https://blog.angular-university.io/angular-jwt-authentication/
   }
 
-  logout() {
+  logout() : Observable<any> {
     localStorage.setItem('logged-in-mock', 'false');
+    return of(undefined)
     // TODO Make sure to do .shareReplay(); https://blog.angular-university.io/angular-jwt-authentication/
   }
 
