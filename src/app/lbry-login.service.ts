@@ -27,6 +27,6 @@ export class LoginService {
   }
 
   isLoggedIn(): boolean {
-    return localStorage.getItem("logged-in-mock") === 'false';
+    return localStorage.getItem("logged-in-mock") === 'true';
   }
 }
