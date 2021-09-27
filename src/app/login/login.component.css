@@ -1,0 +1,12 @@
+#action-log-in span {
+  color: #868686;
+  border: 2px solid #DDDDDD;
+  padding: 2em;
+  border-radius: 100px;
+  font-size: 3em;
+}
+
+#action-log-in {
+  margin-top: 15em;
+  text-align: center;
+}

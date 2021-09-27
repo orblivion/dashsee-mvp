@@ -3,6 +3,7 @@ import { RouterModule, Routes, UrlSegment } from '@angular/router';
 import { checkMediaUri } from './lbry-media-uri';
 import { VideoComponent } from './video/video.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { LoginComponent } from './login/login.component';
 
 function matchLBRYMediaUri(url : UrlSegment[]) {
   // We'll just assume that any string is fine, so long as it's at most
@@ -38,6 +39,7 @@ const routes: Routes = [
   // For now, redirect back to root. Eventually we get a @channel component.
   { matcher: matchLBRYChannelUri, redirectTo: '' },
   { matcher: matchLBRYMediaUri, component: VideoComponent },
+  { path: "$/login", component: LoginComponent },
   { path: "**", redirectTo: '' }, // TODO maybe a proper 404
 ];
 

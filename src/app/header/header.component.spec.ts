@@ -33,6 +33,7 @@ describe('HeaderComponent', () => {
       const compiled = fixture.nativeElement as HTMLElement;
       expect(compiled.querySelector('.header-logo div')?.textContent).toContain('DASHsee');
     });
+
     it('shows login/signup buttons when logged out', () => {
       component.isLoggedIn = false
 
