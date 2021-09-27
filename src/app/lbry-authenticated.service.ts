@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 import { Channel } from './video';
 import { mockChannel } from './mock-channel';
@@ -20,7 +20,22 @@ export class AuthenticatedService {
 
   constructor(private http: HttpClient) { }
 
-  getMyChannel(): Observable<Channel> {
+  getMyChannel(): Observable<Channel | undefined> {
     return of(mockChannel);
+  }
+
+  login(username: string, password: string) {
+    // TODO - assuming for now that we're not putting the token in cookies. The interface shouldn't change much if we do.
+    localStorage.setItem('logged-in-mock', 'true');
+    // TODO Make sure to do .shareReplay(); https://blog.angular-university.io/angular-jwt-authentication/
+  }
+
+  logout() {
+    localStorage.setItem('logged-in-mock', 'false');
+    // TODO Make sure to do .shareReplay(); https://blog.angular-university.io/angular-jwt-authentication/
+  }
+
+  isLoggedIn(): boolean {
+    return localStorage.getItem("logged-in-mock") === 'true';
   }
 }

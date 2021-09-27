@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { Channel } from '../video';
 
 import { AuthenticatedService } from '../lbry-authenticated.service';
-import { LoginService } from '../lbry-login.service';
 
 @Component({
   selector: 'app-header',
@@ -15,10 +14,10 @@ export class HeaderComponent implements OnInit {
   myChannel? : Channel;
   isLoggedIn : boolean = false;
 
-  constructor(private loginService : LoginService, private authenticatedService : AuthenticatedService) { }
+  constructor(private authenticatedService : AuthenticatedService) { }
 
   setLoginState(): void {
-    this.isLoggedIn = this.loginService.isLoggedIn()
+    this.isLoggedIn = this.authenticatedService.isLoggedIn()
     if (this.isLoggedIn) {
       this.authenticatedService.getMyChannel()
         .subscribe(channel => {
@@ -28,7 +27,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout(): void {
-    this.loginService.logout()
+    this.authenticatedService.logout()
   }
 
   ngOnInit(): void {

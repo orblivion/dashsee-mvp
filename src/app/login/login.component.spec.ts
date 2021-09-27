@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { LoginComponent } from './login.component';
-import { LoginService } from '../lbry-login.service';
+import { AuthenticatedService } from '../lbry-authenticated.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -30,10 +30,10 @@ describe('LoginComponent', () => {
 
   describe('service interaction', () => {
     let loginTestFunc: Function
-    let loginService: LoginService;
+    let authenticatedService: AuthenticatedService;
 
     beforeEach(async () => {
-      class MockLoginService {
+      class MockAuthenticatedService {
         login(username: string, password: string) {
           loginTestFunc(username, password)
         }
@@ -42,13 +42,13 @@ describe('LoginComponent', () => {
       TestBed.configureTestingModule({
         providers: [
           [LoginComponent],
-          { provide: LoginService, useClass: MockLoginService },
+          { provide: AuthenticatedService, useClass: MockAuthenticatedService },
         ],
         imports: [HttpClientTestingModule],
       })
 
       component = TestBed.inject(LoginComponent);
-      loginService = TestBed.inject(LoginService);
+      authenticatedService = TestBed.inject(AuthenticatedService);
     });
 
     it('clicking log in button calls login on the service', (done) => {

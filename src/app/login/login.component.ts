@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { LoginService } from '../lbry-login.service';
+import { AuthenticatedService } from '../lbry-authenticated.service';
 
 @Component({
   selector: 'app-login',
@@ -9,10 +9,10 @@ import { LoginService } from '../lbry-login.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private loginService : LoginService) { }
+  constructor(private authenticatedService : AuthenticatedService) { }
 
   login(): void {
-    this.loginService.login('Mock User', 'Mock Password')
+    this.authenticatedService.login('Mock User', 'Mock Password')
   }
 
   ngOnInit(): void {

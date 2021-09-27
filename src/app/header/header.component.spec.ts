@@ -4,7 +4,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HeaderComponent } from './header.component';
 import { Channel } from '../video';
 import { AuthenticatedService } from '../lbry-authenticated.service';
-import { LoginService } from '../lbry-login.service';
 import { Observable, of } from 'rxjs';
 
 describe('HeaderComponent', () => {
@@ -71,12 +70,14 @@ describe('HeaderComponent', () => {
   describe('service interaction', () => {
     let isLoggedInVal: boolean
     let getMyChannelObservable: Observable<Channel>
-    let loginService: LoginService;
     let authenticatedService: AuthenticatedService;
     let logoutTestFunc: Function
 
     beforeEach(async () => {
-      class MockLoginService {
+      class MockAuthenticatedService {
+        getMyChannel(): Observable<any> {
+          return getMyChannelObservable
+        }
         isLoggedIn(): boolean {
           return isLoggedInVal
         }
@@ -84,23 +85,16 @@ describe('HeaderComponent', () => {
           logoutTestFunc()
         }
       }
-      class MockAuthenticatedService {
-        getMyChannel(): Observable<any> {
-          return getMyChannelObservable
-        }
-      }
 
       TestBed.configureTestingModule({
         providers: [
           [HeaderComponent],
-          { provide: LoginService, useClass: MockLoginService },
           { provide: AuthenticatedService, useClass: MockAuthenticatedService },
         ],
         imports: [HttpClientTestingModule],
       })
 
       component = TestBed.inject(HeaderComponent);
-      loginService = TestBed.inject(LoginService);
       authenticatedService = TestBed.inject(AuthenticatedService);
     });
 
