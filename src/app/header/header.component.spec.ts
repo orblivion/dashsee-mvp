@@ -140,6 +140,23 @@ describe('HeaderComponent', () => {
       component.setLoginState();
     });
 
+    it('isLoggedIn set to true when service says so, and myChannel set to undefined from service', (done) => {
+      isLoggedInVal = true;
+      getMyChannelObservable = new Observable(subscriber => {
+        // give the subscriber the video it wants
+        subscriber.next(undefined)
+
+        // now observe the results
+
+        expect(component.isLoggedIn).toBeTrue();
+        expect(component.myChannel).toBeUndefined();
+
+        done();
+      })
+
+      component.setLoginState();
+    });
+
     it('clicking log in button calls login on the service', (done) => {
       logoutTestFunc = done
 

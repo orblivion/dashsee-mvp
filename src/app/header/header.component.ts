@@ -11,6 +11,7 @@ import { LoginService } from '../lbry-login.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  // NOTE: channel can be null even if logged in. The user might not have a channel.
   myChannel? : Channel;
   isLoggedIn : boolean = false;
 
