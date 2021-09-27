@@ -17,11 +17,11 @@
     </span>
     <span class='header-right'>
       <ng-container *ngIf="isLoggedIn">
-        <ng-container *ngIf="myChannel">
-          <span id='header-my-channel-handle'>{{ myChannel.handle }}</span>
-          <img id='header-my-channel-thumbnail' src="{{ myChannel.thumbnailUrl }}">
-        </ng-container>
         <span id='header-btn-log-out'>Log Out</span>
+        <a *ngIf="myChannel" routerLink="{{ myChannel.handle }}">
+          <img id='header-my-channel-thumbnail' src="{{ myChannel.thumbnailUrl }}">
+          <span id='header-my-channel-handle'>{{ myChannel.handle }}</span>
+        </a>
       </ng-container>
       <ng-container *ngIf="!isLoggedIn">
         <span id='header-btn-sign-up'>Sign Up</span>
