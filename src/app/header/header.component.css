@@ -141,11 +141,15 @@
    works right. Make the name super long and see if it looks okay. */
 #header-my-channel-handle {
   color: #55F;
-  text-decoration: inherit;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-top: 1em;
   padding-right: 1em;
   text-align: right;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
 }
