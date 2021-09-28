@@ -1,3 +1,8 @@
 <div id="action-sign-up">
-  <span (click)="signup()">Sign Up</span>
+  <span (click)="signup(true)">Sign Up</span>
+  <span (click)="signup(false)">Sign Up fail</span>
+</div>
+
+<div id="sign-up-error">
+  <span class="error-message" *ngIf="errorMessage">{{ errorMessage }}</span>
 </div>

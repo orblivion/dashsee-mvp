@@ -8,11 +8,18 @@ import { AuthenticatedService } from '../lbry-authenticated.service';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
+  errorMessage? : string;
 
   constructor(private authenticatedService : AuthenticatedService) { }
 
-  signup(): void {
-    this.authenticatedService.signup('Mock User', 'Mock Password')
+  signup(success : boolean): void {
+    this.errorMessage = undefined;
+    this.authenticatedService.signup('Mock User', success ? 'Mock Password' : 'Wrong Password')
+      .subscribe({
+        error: () => {
+          this.errorMessage = "Signup Error";
+        },
+      });
   }
 
   ngOnInit(): void {
