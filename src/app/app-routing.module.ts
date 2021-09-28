@@ -4,6 +4,7 @@ import { checkMediaUri } from './lbry-media-uri';
 import { VideoComponent } from './video/video.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
 
 function matchLBRYMediaUri(url : UrlSegment[]) {
   // We'll just assume that any string is fine, so long as it's at most
@@ -40,6 +41,7 @@ const routes: Routes = [
   { matcher: matchLBRYChannelUri, redirectTo: '' },
   { matcher: matchLBRYMediaUri, component: VideoComponent },
   { path: "$/login", component: LoginComponent },
+  { path: "$/signup", component: SignupComponent },
   { path: "**", redirectTo: '' }, // TODO maybe a proper 404
 ];
 

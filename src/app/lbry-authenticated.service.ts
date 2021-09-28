@@ -42,6 +42,11 @@ export class AuthenticatedService {
     // TODO Make sure to do .shareReplay(); https://blog.angular-university.io/angular-jwt-authentication/
   }
 
+  signup(username: string, password: string) : Observable<any> {
+    // for now just log in
+    return this.login(username, password)
+  }
+
   logout() : Observable<any> {
     localStorage.setItem('logged-in-mock', 'false');
     this.updateMyChannel(false)
