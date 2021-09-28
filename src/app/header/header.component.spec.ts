@@ -69,21 +69,18 @@ describe('HeaderComponent', () => {
 
   describe('service interaction', () => {
     let isLoggedInVal: boolean
-    let getMyChannelObservable: Observable<Channel>
+    let getMyChannelChangesObservable: Observable<Channel | undefined>
     let authenticatedService: AuthenticatedService;
-    let logoutTestFunc: Function
 
     beforeEach(async () => {
       class MockAuthenticatedService {
-        getMyChannel(): Observable<any> {
-          return getMyChannelObservable
+        getMyChannelChanges(): Observable<any> {
+          return getMyChannelChangesObservable
         }
         isLoggedIn(): boolean {
           return isLoggedInVal
         }
-        logout(): void {
-          logoutTestFunc()
-        }
+        logout(): void {}
       }
 
       TestBed.configureTestingModule({
@@ -94,67 +91,70 @@ describe('HeaderComponent', () => {
         imports: [HttpClientTestingModule],
       })
 
-      component = TestBed.inject(HeaderComponent);
       authenticatedService = TestBed.inject(AuthenticatedService);
     });
 
-    it('isLoggedIn set to false when service says so', () => {
-      isLoggedInVal = false
-      getMyChannelObservable = new Observable() // shouldn't even be called
+    // Because of the Subject stuff, the component and Observable responses
+    // need to be initialized with beforeEach. Different test cases have
+    // different needs so we have a different beforeEach for each test.
 
-      component.setLoginState()
+    describe('when service says I am logged out', () => {
+      beforeEach(async () => {
+        isLoggedInVal = false
+        getMyChannelChangesObservable = of(undefined)
 
-      expect(component.isLoggedIn).toBeFalse();
-      expect(component.myChannel).toBeUndefined();
-
+        component = TestBed.inject(HeaderComponent);
+      });
+      it('isLoggedIn set to false and myChannel set to undefined ', () => {
+        expect(component.isLoggedIn).toBeFalse();
+        expect(component.myChannel).toBeUndefined();
+      });
     });
 
-    it('isLoggedIn set to true when service says so, and myChannel set from service', (done) => {
-      isLoggedInVal = true;
-      getMyChannelObservable = new Observable(subscriber => {
-        // give the subscriber the video it wants
-        subscriber.next({
+    describe('when service says I am logged in and I have a channel', () => {
+      beforeEach(async () => {
+        isLoggedInVal = true;
+        getMyChannelChangesObservable = of({
           handle: "@DigitalCashNetwork",
           name: "Digital Cash Network",
           thumbnailUrl: "path/to/channel/thumbnail.png",
-        })
-
-        // now observe the results
-
+        });
+        component = TestBed.inject(HeaderComponent);
+      });
+      it('isLoggedIn set to true, myChannel is set to my channel', () => {
         expect(component.isLoggedIn).toBeTrue();
         expect(component.myChannel).toEqual({
           handle: "@DigitalCashNetwork",
           name: "Digital Cash Network",
           thumbnailUrl: "path/to/channel/thumbnail.png",
         });
-
-        done();
       })
-
-      component.setLoginState();
     });
 
-    it('isLoggedIn set to true when service says so, and myChannel set to undefined from service', (done) => {
-      isLoggedInVal = true;
-      getMyChannelObservable = new Observable(subscriber => {
-        // give the subscriber the video it wants
-        subscriber.next(undefined)
-
-        // now observe the results
-
+    describe('when service says I am logged in but I do not have a channel', () => {
+      beforeEach(async () => {
+        isLoggedInVal = true;
+        getMyChannelChangesObservable = of(undefined)
+        component = TestBed.inject(HeaderComponent);
+      });
+      it('isLoggedIn set to true and myChannel set to undefined', () => {
         expect(component.isLoggedIn).toBeTrue();
         expect(component.myChannel).toBeUndefined();
-
-        done();
-      })
-
-      component.setLoginState();
+      });
     });
 
-    it('clicking log in button calls login on the service', (done) => {
-      logoutTestFunc = done
+    describe('clicking log out button', () => {
+      beforeEach(async () => {
+        getMyChannelChangesObservable = of(undefined)
+        component = TestBed.inject(HeaderComponent);
+      });
+      it('calls logout on the service', () => {
+        spyOn(authenticatedService, 'logout')
 
-      component.logout()
+        component.logout()
+
+        expect(authenticatedService.logout).toHaveBeenCalled()
+      });
     });
   });
 });

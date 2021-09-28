@@ -182,10 +182,10 @@ describe('VideoComponent', () => {
         // now observe the results
 
         // confirm the state of the component
-        expect(component?.video).toBeUndefined;
-        expect(component?.streamUrl).toBeUndefined;
-        expect(component?.notFound).toBeTrue()
-        expect(component?.notVideo).toBeFalse()
+        expect(component.video).toBeUndefined;
+        expect(component.streamUrl).toBeUndefined;
+        expect(component.notFound).toBeTrue()
+        expect(component.notVideo).toBeFalse()
 
         // confirm that we've redirected to the canonical url
         expect(updateUrlSpy.calls.count()).toEqual(0)
@@ -210,10 +210,10 @@ describe('VideoComponent', () => {
         // now observe the results
 
         // confirm the state of the component
-        expect(component?.video).toBeUndefined;
-        expect(component?.streamUrl).toBeUndefined;
-        expect(component?.notFound).toBeFalse()
-        expect(component?.notVideo).toBeTrue()
+        expect(component.video).toBeUndefined;
+        expect(component.streamUrl).toBeUndefined;
+        expect(component.notFound).toBeFalse()
+        expect(component.notVideo).toBeTrue()
 
         // confirm that we've redirected to the canonical url
         expect(updateUrlSpy.calls.count()).toEqual(0)
