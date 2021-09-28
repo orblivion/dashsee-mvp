@@ -1,3 +1,8 @@
 <div id="action-log-in">
-  <span (click)="login()">Log In</span>
+  <span (click)="login(true)">Log In</span>
+  <span (click)="login(false)">Log In Fail</span>
+</div>
+
+<div id="log-in-error">
+  <span class="error-message" *ngIf="errorMessage">{{ errorMessage }}</span>
 </div>

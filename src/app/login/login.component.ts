@@ -8,11 +8,18 @@ import { AuthenticatedService } from '../lbry-authenticated.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  errorMessage? : string;
 
   constructor(private authenticatedService : AuthenticatedService) { }
 
-  login(): void {
-    this.authenticatedService.login('Mock User', 'Mock Password')
+  login(success : boolean): void {
+    this.errorMessage = undefined;
+    this.authenticatedService.login('Mock User', success ? 'Mock Password' : 'Wrong Password')
+      .subscribe({
+        error: () => {
+          this.errorMessage = "Login Error";
+        },
+      });
   }
 
   ngOnInit(): void {

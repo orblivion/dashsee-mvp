@@ -6,6 +6,8 @@ import { mockChannel } from './mock-channel';
 
 // TODO guide https://blog.angular-university.io/angular-jwt-authentication/
 
+// TODO - test me once I actually work
+
 export enum AuthenticatedError {
   NotFound,
   Unknown,
@@ -35,11 +37,15 @@ export class AuthenticatedService {
   }
 
   login(username: string, password: string) : Observable<any> {
-    // TODO - assuming for now that we're not putting the token in cookies. The interface shouldn't change much if we do.
-    localStorage.setItem('logged-in-mock', 'true');
-    this.updateMyChannel(true)
-    return of(undefined)
-    // TODO Make sure to do .shareReplay(); https://blog.angular-university.io/angular-jwt-authentication/
+    if (password !== "Wrong Password") {
+      // TODO - assuming for now that we're not putting the token in cookies. The interface shouldn't change much if we do.
+      localStorage.setItem('logged-in-mock', 'true');
+      this.updateMyChannel(true)
+      return of(undefined)
+      // TODO Make sure to do .shareReplay(); https://blog.angular-university.io/angular-jwt-authentication/
+    } else {
+      return new Observable(subscriber => subscriber.error({}))
+    }
   }
 
   signup(username: string, password: string) : Observable<any> {

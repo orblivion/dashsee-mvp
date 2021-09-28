@@ -4,9 +4,21 @@
   padding: 2em;
   border-radius: 100px;
   font-size: 3em;
+  margin-left: 1em;
 }
 
 #action-log-in {
   margin-top: 15em;
   text-align: center;
+}
+
+#log-in-error {
+  margin-top: 15em;
+  margin-bottom: 20em;
+  text-align: center;
+}
+
+.error-message {
+  color: #E55;
+  font-size: 3em;
 }
