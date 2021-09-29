@@ -18,7 +18,7 @@
     <span class='header-right'>
       <ng-container *ngIf="isLoggedIn">
         <span id='header-btn-log-out' (click)="logout()">Log Out</span>
-        <a *ngIf="myChannel" routerLink="{{ myChannel.handle }}">
+        <a *ngIf="myChannel" routerLink="/"> <!-- {{ myChannel.canonicalUri }} when we have that ready -->
           <img id='header-my-channel-thumbnail' src="{{ myChannel.thumbnailUrl }}">
           <div id='header-my-channel-handle'>{{ myChannel.handle }}</div>
         </a>
