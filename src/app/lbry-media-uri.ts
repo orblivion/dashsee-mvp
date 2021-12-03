@@ -1,3 +1,4 @@
+// Is this a valid URI?
 export function checkMediaUri(uri: string) {
   // We'll just assume that any string is fine, so long as it's at most
   // one slash and one colon in each segment.

@@ -43,6 +43,9 @@ export class VideoComponent implements OnInit {
       });
   }
 
+  // The URI we gave could be valid, but it might not be the canonical. This
+  // will change the URL bar to point to the canonical URI. (Odysee does the
+  // same).
   updateUrl(canonicalUri : string): void {
     // Check the validity of the uri before setting the URL bar to it.
     // Who knows, maybe the API sent us something funny.

@@ -34,6 +34,40 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 # Development Notes
 
+## File Layout
+
+The source starts out as a standard Angular app. The base is in `src/`. There's probably nothing notable in this base directory. `src/app/` contains most of the application-specific code, so we'll assume that to be our base directory for this discussion.
+
+### Components
+
+#### App
+
+Header icon, Search bar (that doesn't do anything as of this writing), Sign Up / Log In buttons (that don't really do anything as of this writing).
+
+Whatever the router points to goes into router-outlet. Usual Angular stuff.
+
+#### Video
+
+Given a URI, this should display the video and some channel info, or an error.
+
+#### Video List
+
+Given parameters, it will return search results of videos.
+
+It will be paginated: A fixed maximum number of pages will load, and it will a button to load the next page.
+
+Currently the only input parameter to this component is ordering: trending vs latest. However this will probably be overloaded in the future to list the videos belonging to a channel.
+
+#### Home Page
+
+What shows up at the root URL. It contains a video list and a switch to choose whether to return videos by trending vs latest.
+
+### Services
+
+#### Video Service
+
+A library calling out to LBRY's unauthenticated API. Searching for videos, getting them, etc.
+
 ## TODO
 
 Some notes of things that have been gathered as this MVP has been developed. Fix along the way, and/or make them a Dash Incubator item.
