@@ -25,6 +25,8 @@ export class VideoService {
   constructor(private http: HttpClient) { }
 
   // TODO - what is a "confirmed" uri? just want to name/comment things properly
+
+  // Given a video object of our defined structure, get the stream URL for the video
   getStreamUrl(video: Video): Observable<any> {
     return new Observable(subscriber => {
       this.http
@@ -62,6 +64,9 @@ export class VideoService {
     })
   }
 
+  // Given a video object that came from the API, construct a video object using our
+  // own defined structure. This includes creating a channel sub-structure.
+  //
   // TODO stop making assumptions about what data we're getting in
   private buildVideo(apiVideo: any): Video {
     let channel : Channel | undefined;
@@ -91,6 +96,7 @@ export class VideoService {
     }
   }
 
+  // Get a paginated list of video from the API
   getVideos(orderBy: string, page: number, pageSize: number): Observable<VideoPage> {
     return new Observable(subscriber => {
       this.http
