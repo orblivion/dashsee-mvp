@@ -11,7 +11,11 @@ const pageSize = 20; // As of this writing, the default from LBRY's API is 20.
 })
 export class VideoListComponent implements OnInit {
   totalPages : number | undefined;
-  currentPage : number = 0; // 1-indexed, but we add 1 before we pass in to the API
+
+  // Which page will we be requesting from the API next?
+  // 1-indexed, but we add 1 before we pass in to the API
+  currentPage : number = 0;
+
   videos : Video[] = [];
   requestError : Boolean = false;
   loading : Boolean = false;

@@ -20,6 +20,16 @@ export class VideoComponent implements OnInit {
   constructor(private videoService : VideoService, private route : ActivatedRoute, private router : Router) { }
 
   getAndShowVideo(mediaUriEncoded: string) {
+    /*
+
+      This comes in a few steps:
+
+      * `videoService.getVideo`: Request video object based on `mediaUriEncoded`
+      * `videoService.getStreamUrl`: Given the video object, we make another request to get the video stream URL
+      * The browser loads the video via the stream URL
+
+    */
+
     this.videoService.getVideo(mediaUriEncoded)
       .subscribe({
         next: (video) => {

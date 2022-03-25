@@ -10,18 +10,22 @@ export class HomePageComponent implements OnInit {
   byTimestamp: string = "timestamp"
   orderBy: string = "";
 
+  // Set "trending" ordering
   setByTrendingMixed() {
     this.orderBy = this.byTrendingMixed
   }
 
+  // Check if "trending" ordering
   isByTrendingMixed() {
     return this.orderBy == this.byTrendingMixed
   }
 
+  // Set "by timestamp" ordering
   setByTimestamp() {
     this.orderBy = this.byTimestamp
   }
 
+  // Check if "by timestamp" ordering
   isByTimestamp() {
     return this.orderBy == this.byTimestamp
   }

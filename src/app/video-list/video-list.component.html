@@ -1,6 +1,8 @@
 <div>
   <div class="video-list-container">
 
+    <!-- Loop over all videos returned in the given page -->
+
     <!-- title="..." is for mouseover in case of text truncate of video.title -->
     <div
       title="{{ video.title }}"
@@ -12,6 +14,7 @@
         <img class='video-thumbnail' src={{video.thumbnailUrl}} alt="video thumbnail">
       </div>
 
+      <!-- long video titles get truncated with an elipsis -->
       <h4 class='video-title'>
         {{ (video.title.length > 50)? (video.title | slice:0:50)+'...':(video.title) }}
       </h4>
@@ -34,6 +37,15 @@
   <div *ngIf="requestError; else Okay">
     <p class="error-message">something went wrong...</p>
   </div>
+
+  <!--
+  
+  This button will call `getAndShowNextVideos()` which adds more videos to the list of current videos.
+  
+  While the API is organized into "pages", our display is not. When the API returns, we will just append
+  the new videos to the variable `videos`. The above loop will automatically display all of the videos e have accumulated.
+  
+  -->
   <ng-template #Okay>
     <div class="btn-next-page-container" *ngIf="!loading && totalPages && currentPage < totalPages">
       <span class="btn-next-page" (click)="getAndShowNextVideos()">Show More</span>

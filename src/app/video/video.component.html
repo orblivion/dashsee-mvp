@@ -1,13 +1,18 @@
 <div class='video-section'>
+
   <div class='video-container'>
     <ng-container *ngIf="video; else IfNotFound">
       <video class='video-frame' *ngIf="streamUrl; else thumbNail" src="{{streamUrl}}" controls>
         Your Browser Dosen't Support HTML5 Video. Please Upgrade...
       </video>
+
+      <!-- We get a video thumbnail before we get the video itself. We can show that while we're loading. -->
       <ng-template #thumbNail>
         <img class='video-frame' src={{video.thumbnailUrl}} alt="video thumbnail">
       </ng-template>
     </ng-container>
+
+    <!-- A couple failure modes. -->
     <ng-template #IfNotFound>
       <ng-container *ngIf="notFound; else IfNotVideo">
         <p class="error-message">Sorry, this video was not found.</p>
@@ -18,8 +23,12 @@
         <p class="error-message">Sorry, this is not a video.</p>
       </ng-container>
     </ng-template>
+    
     <ng-template #Loading><p class="loading-message">loading...</p></ng-template>
   </div>
+
+
+  <!-- If we have a video, show whatever metadata we can -->
   <div class='video-details'>
     <div *ngIf="video">
       <h1 class='video-title'>{{video.title}}</h1>
@@ -34,4 +43,5 @@
       <p class='video-description'>{{video.description}}</p>
     </div>
   </div>
+
 </div>

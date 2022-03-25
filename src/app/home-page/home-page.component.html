@@ -1,7 +1,10 @@
+<!-- let the user select an ordering of videos -->
 <div class="selectors">
   <span [class.selected]="isByTrendingMixed()" class="btn-order-by" id="btn-home-page-by-trending-mixed" (click)="setByTrendingMixed()">Trending</span>
   <span [class.selected]="isByTimestamp()" class="btn-order-by" id="btn-home-page-by-timestamp" (click)="setByTimestamp()">Recent</span>
 </div>
+
+<!-- show the video-list component with the desired ordering based on which is selected -->
 <span *ngIf="isByTrendingMixed()">
   <app-video-list [orderBy]="byTrendingMixed"></app-video-list>
 </span>
