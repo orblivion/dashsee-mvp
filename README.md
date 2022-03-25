@@ -70,7 +70,7 @@ A library calling out to LBRY's unauthenticated API. Searching for videos, getti
 
 ## TODO
 
-Some notes of things that have been gathered as this MVP has been developed. Fix along the way, and/or make them a Dash Incubator item.
+Some notes of things that have been gathered as this MVP has been developed. Fix these along the way of development, and/or make them a Dash Incubator item.
 
 ### Later:
 
